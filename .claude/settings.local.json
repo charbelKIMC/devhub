@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(grep -n '\\\\\\\\DB::\\\\|catch.*$e\\\\|Auth::' /c/xampp/htdocs/devhub/app/Http/Controllers/AdminController.php)",
+      "Bash(grep -v \"^$\")",
+      "Bash(findstr /i \"candidat\\\\|membre\\\\|projet\\\\|conversation\")"
+    ]
+  }
+}

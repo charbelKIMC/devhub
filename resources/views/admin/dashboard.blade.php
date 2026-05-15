@@ -1,0 +1,162 @@
+@extends('layouts.admin')
+@section('title', 'Tableau de bord – Admin DevHub')
+@section('page_title', 'Tableau de bord')
+
+@section('content')
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background:#EDE9FE;color:#7C3AED;"><i class="fas fa-users"></i></div>
+            <div>
+                <div class="kpi-val">{{ $stats['total_utilisateurs'] }}</div>
+                <div class="kpi-label">Développeurs</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background:#D1FAE5;color:#065F46;"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div>
+                <div class="kpi-val">{{ $stats['total_mentors'] }}</div>
+                <div class="kpi-label">Mentors actifs</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background:#DBEAFE;color:#1D4ED8;"><i class="fas fa-folder-open"></i></div>
+            <div>
+                <div class="kpi-val">{{ $stats['total_publications'] }}</div>
+                <div class="kpi-label">Publications</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background:#FEF9C3;color:#854D0E;"><i class="fas fa-clock"></i></div>
+            <div>
+                <div class="kpi-val">{{ $stats['demandes_mentor'] }}</div>
+                <div class="kpi-label">Demandes mentor</div>
+            </div>
+        </div>
+        <!-- Remplace la grille 4 colonnes par 5 colonnes ou ajoute une 2ème ligne -->
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background:#DBEAFE;color:#1D4ED8;">
+                <i class="fas fa-link"></i>
+            </div>
+            <div>
+                <div class="kpi-val">{{ $stats['total_attributions'] }}</div>
+                <div class="kpi-label">Attributions mentor actives</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-grid">
+
+        <div class="recent-section">
+            <div class="recent-header">
+                <span class="recent-title"><i class="fas fa-user-plus me-2" style="color:var(--purple);"></i>Derniers inscrits</span>
+                <a href="{{ route('admin.utilisateurs') }}" class="recent-link">Voir tous</a>
+            </div>
+            @php
+                $derniers = \App\Models\Utilisateur::where('role','développeur')->latest('date_inscription')->take(5)->get();
+            @endphp
+            @forelse($derniers as $u)
+                <div class="recent-item">
+                    <div class="recent-ava">
+                        @if($u->photo)<img src="{{ asset('storage/'.$u->photo) }}" alt="">
+                        @else {{ strtoupper(substr($u->prenom,0,1)) }} @endif
+                    </div>
+                    <div>
+                        <div class="recent-name">{{ $u->prenom }} {{ $u->nom }}</div>
+                        <div class="recent-sub">{{ $u->specialite ?? 'Développeur' }}</div>
+                    </div>
+                    <span class="recent-time">{{ $u->date_inscription->diffForHumans() }}</span>
+                </div>
+            @empty
+                <div style="padding:2rem;text-align:center;color:var(--gray-400);font-size:0.82rem;">Aucun utilisateur</div>
+            @endforelse
+        </div>
+
+        <!-- Mentors actifs -->
+        <div class="recent-section">
+            <div class="recent-header">
+                <span class="recent-title"><i class="fas fa-chalkboard-teacher me-2" style="color:#065F46;"></i>Mentors enregistrés</span>
+                <a href="{{ route('admin.candidatures.externes') }}" class="recent-link">Voir tous</a>
+            </div>
+            @php
+                $mentors = \App\Models\Utilisateur::where('role','mentor')->where('statut','actif')->take(5)->get();
+            @endphp
+            @forelse($mentors as $m)
+                <div class="recent-item">
+                    <div class="recent-ava" style="background:#D1FAE5;color:#065F46;">
+                        @if($m->photo)<img src="{{ asset('storage/'.$m->photo) }}" alt="">
+                        @else {{ strtoupper(substr($m->prenom,0,1)) }} @endif
+                    </div>
+                    <div>
+                        <div class="recent-name">{{ $m->prenom }} {{ $m->nom }}</div>
+                        <div class="recent-sub">{{ $m->specialite ?? 'Mentor' }}</div>
+                    </div>
+                    @php
+                        $nbMentores = \App\Models\RelationMentorat::where('mentor_id',$m->id)->where('statut','active')->count();
+                    @endphp
+                    <span style="font-size:0.7rem;background:#D1FAE5;color:#065F46;padding:0.15rem 0.5rem;border-radius:6px;margin-left:auto;font-weight:700;">
+                        {{ $nbMentores }} mentoré{{ $nbMentores > 1 ? 's' : '' }}
+                    </span>
+                </div>
+            @empty
+                <div style="padding:2rem;text-align:center;color:var(--gray-400);font-size:0.82rem;">Aucun mentor actif</div>
+            @endforelse
+        </div>
+
+        <!-- Dernières attributions -->
+        <div class="recent-section" style="grid-column:1/-1;">
+            <div class="recent-header">
+                <span class="recent-title">
+                    <i class="fas fa-link me-2" style="color:var(--purple);"></i>Dernières attributions
+                </span>
+                <a href="{{ route('admin.candidatures.externes') }}" class="recent-link">Gérer</a>
+            </div>
+
+            @forelse($dernieresAttributions as $rel)
+                <div class="recent-item">
+                    <!-- Mentoré -->
+                    <div class="recent-ava" style="background:var(--purple-light);color:var(--purple);">
+                        @if($rel->mentore?->photo)
+                            <img src="{{ asset('storage/'.$rel->mentore->photo) }}" alt="">
+                        @else
+                            {{ strtoupper(substr($rel->mentore?->prenom ?? '?', 0, 1)) }}
+                        @endif
+                    </div>
+                    <div>
+                        <div class="recent-name">{{ $rel->mentore?->prenom }} {{ $rel->mentore?->nom }}</div>
+                        <div class="recent-sub" style="color:var(--gray-400);">Développeur</div>
+                    </div>
+
+                    <!-- Flèche -->
+                    <div style="margin:0 0.5rem;color:var(--purple);font-size:0.85rem;">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+
+                    <!-- Mentor -->
+                    <div class="recent-ava" style="background:#D1FAE5;color:#065F46;">
+                        @if($rel->mentor?->photo)
+                            <img src="{{ asset('storage/'.$rel->mentor->photo) }}" alt="">
+                        @else
+                            {{ strtoupper(substr($rel->mentor?->prenom ?? '?', 0, 1)) }}
+                        @endif
+                    </div>
+                    <div>
+                        <div class="recent-name">{{ $rel->mentor?->prenom }} {{ $rel->mentor?->nom }}</div>
+                        <div class="recent-sub">
+                            <span style="background:#D1FAE5;color:#065F46;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:700;">Mentor</span>
+                        </div>
+                    </div>
+
+                    <span class="recent-time">
+                        {{ $rel->date_debut ? $rel->date_debut->diffForHumans() : '—' }}
+                    </span>
+                </div>
+            @empty
+                <div style="padding:2rem;text-align:center;color:var(--gray-400);font-size:0.82rem;">
+                    <i class="fas fa-link" style="font-size:1.5rem;color:var(--gray-200);display:block;margin-bottom:0.5rem;"></i>
+                    Aucune attribution pour le moment
+                </div>
+            @endforelse
+        </div>
+        
+    </div>
+@endsection

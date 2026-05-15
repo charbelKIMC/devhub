@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="font-family:Arial,sans-serif;background:#F5F3FF;padding:2rem;margin:0;">
+<div style="max-width:520px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    <div style="background:#7C3AED;padding:2rem;text-align:center;">
+        <span style="color:white;font-size:1.4rem;font-weight:800;">DevHub</span>
+    </div>
+    <div style="padding:2rem;">
+        <h2 style="color:#111827;font-size:1.2rem;margin-bottom:0.5rem;">
+            Nouveau mentoré, {{ $mentor->prenom }} !
+        </h2>
+        <p style="color:#6B7280;line-height:1.7;margin-bottom:1rem;">
+            DevHub vous a attribué automatiquement un nouveau développeur junior à accompagner.
+        </p>
+
+        <div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;">
+            <div style="font-size:0.85rem;color:#065F46;margin-bottom:0.4rem;">Votre nouveau mentoré</div>
+            <div style="font-weight:700;font-size:1rem;color:#065F46;">
+                {{ $developpeur->prenom }} {{ $developpeur->nom }}
+            </div>
+            @if($developpeur->specialite)
+            <div style="font-size:0.82rem;color:#047857;margin-top:0.2rem;">
+                {{ $developpeur->specialite }}
+            </div>
+            @endif
+        </div>
+
+        <p style="color:#6B7280;line-height:1.7;margin-bottom:1.5rem;">
+            Une conversation de mentorat a été ouverte. Vous pouvez dès maintenant contacter votre mentoré via la messagerie DevHub.
+        </p>
+
+        <div style="text-align:center;margin:1.5rem 0;">
+            <a href="{{ url('/mentor/espace') }}" style="background:#7C3AED;color:white;padding:0.85rem 2.5rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;display:inline-block;">
+                Accéder à mon espace mentor
+            </a>
+        </div>
+    </div>
+    <div style="background:#F9FAFB;padding:1rem;text-align:center;border-top:1px solid #F3F4F6;">
+        <p style="color:#9CA3AF;font-size:0.75rem;margin:0;">
+            &copy; {{ date('Y') }} DevHub — Plateforme des développeurs juniors au Bénin
+        </p>
+    </div>
+</div>
+</body>
+</html>
