@@ -1,2 +1,2 @@
 [deploy]
-startCommand = "php artisan config:clear && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"
+startCommand = "rm -f bootstrap/cache/config.php bootstrap/cache/services.php && php artisan storage:link --quiet; php artisan serve --host=0.0.0.0 --port=$PORT"
