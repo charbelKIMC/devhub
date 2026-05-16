@@ -70,7 +70,7 @@ class CandidatureController extends Controller
             try {
                 \Illuminate\Support\Facades\Mail::to($pub->auteur->email)
                     ->send(new \App\Mail\CollabCandidatureRecue($pub->auteur, Auth::user(), $pub));
-            } catch (\Throwable) {}
+            } catch (\Throwable $e) { \Log::error('Mail candidature recue: ' . $e->getMessage()); }
         }
 
         return response()->json(['success' => true, 'message' => 'Candidature envoyée avec succès !']);
@@ -115,7 +115,7 @@ class CandidatureController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($candidat->email)
                 ->send(new \App\Mail\CollabCandidatureAccepteeNda($candidat, $pub, $lienNda));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail candidature acceptee: ' . $e->getMessage()); }
 
         return back()->with('success', 'Candidature acceptée. Le contrat de confidentialité a été envoyé à ' . $candidat->prenom . '.');
     }
