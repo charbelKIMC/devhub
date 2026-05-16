@@ -181,7 +181,7 @@ class MentoratController extends Controller
                 $mail->to($request->email)
                      ->subject('Candidature mentor reçue – DevHub');
             });
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail candidat mentor: ' . $e->getMessage()); }
 
         // Email uniquement à l'admin (pas de notification in-app)
         $admin = Utilisateur::where('role', 'admin')->first();
@@ -194,7 +194,7 @@ class MentoratController extends Controller
                     $mail->to($admin->email)
                          ->subject('Nouvelle candidature mentor – DevHub');
                 });
-            } catch (\Throwable) {}
+            } catch (\Throwable $e) { \Log::error('Mail admin candidature mentor: ' . $e->getMessage()); }
         }
 
         return back()->with('success', 'Votre candidature a bien été enregistrée. Un email de confirmation vous a été envoyé. Notre équipe vous contactera dans 5 à 10 jours ouvrables.');
