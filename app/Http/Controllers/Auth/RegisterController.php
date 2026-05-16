@@ -83,13 +83,17 @@ class RegisterController extends Controller
         ]);
 
         // Envoyer l'email de vérification
-        Mail::send('emails.verification-email', [
-            'prenom' => $request->prenom,
-            'lien'   => route('email.verify', ['token' => $token]),
-        ], function ($mail) use ($request) {
-            $mail->to($request->email)
-                 ->subject('Confirmez votre adresse email – DevHub');
-        });
+        try {
+            Mail::send('emails.verification-email', [
+                'prenom' => $request->prenom,
+                'lien'   => route('email.verify', ['token' => $token]),
+            ], function ($mail) use ($request) {
+                $mail->to($request->email)
+                     ->subject('Confirmez votre adresse email – DevHub');
+            });
+        } catch (\Throwable $e) {
+            \Log::error('Email vérification échoué : ' . $e->getMessage());
+        }
 
         return redirect()->route('email.verification.sent')->with('email', $request->email);
     }
