@@ -341,12 +341,29 @@ class PublicationController extends Controller
         return back()->with('success', 'Projet clôturé. La discussion est maintenant en lecture seule.');
     }
 
-    // Supprime une publication
+    // Supprime une publication et tout ce qui lui est lié
     public function destroy($id)
     {
         $publication = Publication::where('auteur_id', auth()->id())
             ->findOrFail($id);
 
+        // Supprimer la conversation de groupe si projet collaboratif
+        if ($publication->type === 'projet_collaboratif') {
+            $conversation = \App\Models\Conversation::where('type_conversation', 'groupe_projet')
+                ->where('projet_collaboratif_id', $publication->id)
+                ->first();
+            if ($conversation) {
+                $conversation->delete(); // CASCADE → messages + participants
+            }
+        }
+
+        // Supprimer les notifications qui pointent vers cette publication
+        \App\Models\Notification::where('lien', 'LIKE', '%/publications/' . $publication->id . '%')->delete();
+
+        // La suppression déclenche tous les CASCADE DB :
+        // articles, avis, commentaires, favoris, likes, idees,
+        // publication_medias, contrats_nda, projets_personnels,
+        // projets_collaboratifs → candidatures + membres_projet
         $publication->delete();
 
         return redirect()->route('dashboard')
