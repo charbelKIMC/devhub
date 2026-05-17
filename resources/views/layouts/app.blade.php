@@ -695,9 +695,22 @@
             var lien = el.getAttribute('data-lien') || '#';
             fetch(window.APP_URL + '/notifications/' + id, {
                 method: 'PUT',
-                headers: { 'X-CSRF-TOKEN': window.CSRF_TOKEN, 'Accept': 'application/json' }
-            }).catch(function() {});
-            if (lien && lien !== '#') window.location.href = lien;
+                headers: { 'X-CSRF-TOKEN': window.CSRF_TOKEN, 'Accept': 'application/json' },
+                keepalive: true
+            })
+            .finally(function() {
+                if (lien && lien !== '#') {
+                    window.location.href = lien;
+                } else {
+                    loadNotifDropdown();
+                    fetch('{{ route("notifications.poll") }}', {
+                        headers: { 'X-CSRF-TOKEN': window.CSRF_TOKEN, 'Accept': 'application/json' }
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) { updateNotifBadge(data.count); })
+                    .catch(function() {});
+                }
+            });
         }
 
         function loadNotifDropdown() {
