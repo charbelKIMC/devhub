@@ -247,18 +247,19 @@ class AdminController extends Controller
     public function candidaturesExternes(\Illuminate\Http\Request $request)
     {
         $statut = $request->get('statut', 'en_attente');
-        $query  = \App\Models\CandidatureMentorExterne::latest('created_at');
+        $query  = \App\Models\CandidatureMentorExterne::latest('date_candidature');
         if (in_array($statut, ['en_attente', 'acceptée', 'refusée'])) {
             $query->where('statut', $statut);
         }
         $candidatures = $query->paginate(12)->withQueryString();
 
-        $stats = \App\Models\CandidatureMentorExterne::selectRaw("
-            count(*) as total,
-            sum(statut = 'en_attente') as en_attente,
-            sum(statut = 'acceptée')  as acceptees,
-            sum(statut = 'refusée')   as refusees
-        ")->first();
+        $all = \App\Models\CandidatureMentorExterne::selectRaw('statut')->get();
+        $stats = (object)[
+            'total'      => $all->count(),
+            'en_attente' => $all->where('statut', 'en_attente')->count(),
+            'acceptees'  => $all->where('statut', 'acceptée')->count(),
+            'refusees'   => $all->where('statut', 'refusée')->count(),
+        ];
 
         return view('admin.candidatures-externes', compact('candidatures', 'stats', 'statut'));
     }

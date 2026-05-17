@@ -16,4 +16,8 @@ class CandidatureMentorExterne extends Model
         'type_identite', 'numero_identite',
         'chemin_cv', 'chemin_identite', 'statut',
     ];
+
+    protected $casts = [
+        'date_candidature' => 'datetime',
+    ];
 }

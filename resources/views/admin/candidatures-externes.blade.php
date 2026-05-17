@@ -112,7 +112,7 @@
                     @endif
                     <span class="cand-date">
                         <i class="fas fa-clock" style="opacity:.4;"></i>
-                        {{ $c->created_at?->format('d/m/Y à H:i') ?? '—' }}
+                        {{ $c->date_candidature?->format('d/m/Y à H:i') ?? '—' }}
                     </span>
                 </div>
             </div>
