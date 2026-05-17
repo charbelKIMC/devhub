@@ -179,7 +179,7 @@
                             </a>
                             @if(Auth::user()->isMentor())
                                 <div class="dropdown-divider"></div>
-                                <a href="{{ route('mentorat.espace') }}" class="dropdown-link">
+                                <a href="{{ route('mentor.espace') }}" class="dropdown-link">
                                     <i class="fas fa-chalkboard-teacher me-2"></i>Espace mentor
                                 </a>
                             @endif
