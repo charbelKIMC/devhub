@@ -170,9 +170,9 @@
             </div>
 
             @if($mentorsDisponibles->isEmpty())
-                <div style="padding:1.25rem;background:#FEF3C7;border-radius:8px;font-size:0.82rem;color:#92400E;margin:0.75rem 0;">
-                    <i class="fas fa-exclamation-circle me-1"></i>
-                    Aucun mentor disponible actuellement (tous ont atteint leur quota de 3 projets).
+                <div style="padding:1rem;font-size:0.82rem;color:var(--gray-400);text-align:center;">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Aucun mentor disponible — le message a déjà été envoyé dans chaque conversation concernée.
                 </div>
             @endif
 

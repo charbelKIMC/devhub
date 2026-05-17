@@ -264,59 +264,6 @@
     </div>
 </section>
 
-<section class="pub-recentes-section" id="section-publications">
-    <div class="conteneur">
-        <div class="pub-recentes-banner mb-4">
-            <div class="pub-recente-left">
-                <div class="section-title">Dernières publications</div>
-                <p class="section-subtitle">Découvrez ce que la communauté partage en ce moment</p>
-            </div>
-            <div class="pub-recente-right">
-                <a href="{{ route('explorer') }}" class="btn-outline-custom me-3">
-                    <i class="fas fa-th me-2"></i>Voir toutes les publications
-                </a>
-            </div>
-        </div>
-
-        <div class="pub-recentes-grid">
-            @php
-                $pubsRecentes = \App\Models\Publication::with('auteur')
-                    ->where('statut', 'publié')
-                    ->orderBy('date_publication', 'desc')
-                    ->take(8)->get();
-                $typeConfig = [
-                    'article'             => ['label'=>'Article',      'class'=>'pub-type-article',      'icon'=>'fa-newspaper'],
-                    'idee'                => ['label'=>'Idée',         'class'=>'pub-type-idee',         'icon'=>'fa-lightbulb'],
-                    'projet_personnel'    => ['label'=>'Projet',       'class'=>'pub-type-perso',        'icon'=>'fa-folder'],
-                    'projet_collaboratif' => ['label'=>'Collaboratif', 'class'=>'pub-type-collaboratif', 'icon'=>'fa-users'],
-                ];
-            @endphp
-
-            @forelse($pubsRecentes as $pub)
-                @php $tc = $typeConfig[$pub->type] ?? ['label'=>$pub->type,'class'=>'','icon'=>'fa-file']; @endphp
-                <a href="{{ route('publications.public', $pub->id) }}" class="pub-recente-card">
-                    <div class="pub-recente-type {{ $tc['class'] }}">
-                        <i class="fas {{ $tc['icon'] }}"></i> {{ $tc['label'] }}
-                    </div>
-                    <div class="pub-recente-title">{{ $pub->titre }}</div>
-                    @if($pub->contenu)
-                        <p class="pub-recente-desc">{{ Str::limit(strip_tags($pub->contenu), 100) }}</p>
-                    @endif
-                    <div class="pub-recente-footer">
-                        <div class="pub-recente-avatar">{{ strtoupper(substr($pub->auteur->prenom, 0, 1)) }}</div>
-                        <span>{{ $pub->auteur->prenom }} {{ $pub->auteur->nom }}</span>
-                        <span class="ms-auto"><i class="fas fa-eye me-1"></i>{{ $pub->nb_vues }}</span>
-                    </div>
-                </a>
-            @empty
-                <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--gray-lighter);">
-                    <p>La communauté grandit. Soyez le premier à publier !</p>
-                    <a href="{{ route('register') }}" class="btn btn-custom mt-3">Créer un compte</a>
-                </div>
-            @endforelse
-        </div>
-    </div>
-</section>
 
 <section class="features-section" id="section-features">
     <div class="conteneur">

@@ -157,7 +157,7 @@ class ContratNdaController extends Controller
             \App\Models\Message::create([
                 'conversation_id' => $conversation->id,
                 'expediteur_id'   => $pub->auteur_id,
-                'contenu'         => '⏳ Un mentor vous sera attribué dans les meilleurs délais. Vous serez notifiés dès l\'attribution.',
+                'contenu'         => '⚠️ Aucun mentor n\'est disponible actuellement (tous ont atteint leur quota de 3 projets). Un mentor vous sera attribué dès qu\'un créneau se libère.',
                 'date_envoi'      => now(),
                 'est_systeme'     => true,
             ]);

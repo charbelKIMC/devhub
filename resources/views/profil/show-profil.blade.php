@@ -152,47 +152,47 @@
 
     </aside>
 
-    <!-- ─── PUBLICATIONS ─── -->
+    <!-- ─── RÉCAP ACTIVITÉS ─── -->
     <div>
-        <div class="pub-section-title">
-            Publications de {{ $utilisateur->prenom }}
-            <span style="font-size:0.8rem;font-weight:400;color:#9CA3AF;margin-left:0.5rem;">
-                {{ $utilisateur->publications()->where('statut','publié')->count() }} publication(s)
-            </span>
-        </div>
+        <div class="pub-section-title">Activités de {{ $utilisateur->prenom }}</div>
 
         @php
-            $typeConfig = [
-                'article'             => ['label'=>'Article',      'class'=>'pub-type-article',      'icon'=>'fa-newspaper'],
-                'idee'                => ['label'=>'Idée',         'class'=>'pub-type-idee',         'icon'=>'fa-lightbulb'],
-                'projet_personnel'    => ['label'=>'Projet perso', 'class'=>'pub-type-perso',        'icon'=>'fa-folder'],
-                'projet_collaboratif' => ['label'=>'Collaboratif', 'class'=>'pub-type-collaboratif', 'icon'=>'fa-users'],
-            ];
+            $nbArticles   = $utilisateur->publications()->where('statut','publié')->where('type','article')->count();
+            $nbIdees      = $utilisateur->publications()->where('statut','publié')->where('type','idee')->count();
+            $nbProjPerso  = $utilisateur->publications()->where('statut','publié')->where('type','projet_personnel')->count();
+            $nbProjCollab = $utilisateur->publications()->where('statut','publié')->where('type','projet_collaboratif')->count();
+            $nbCollabs    = \App\Models\MembreProjet::where('utilisateur_id', $utilisateur->id)->count();
+            $totalVues    = $utilisateur->publications()->sum('nb_vues');
+            $totalLikes   = $utilisateur->publications()->sum('nb_likes');
         @endphp
 
-        @forelse($utilisateur->publications()->where('statut','publié')->orderBy('date_publication','desc')->get() as $pub)
-            @php $tc = $typeConfig[$pub->type] ?? ['label'=>$pub->type,'class'=>'','icon'=>'fa-file']; @endphp
-            <a href="{{ route('publications.public', $pub->id) }}" class="pub-card-public">
-                <div class="pub-type-pill-sm {{ $tc['class'] }}">
-                    <i class="fas {{ $tc['icon'] }}"></i> {{ $tc['label'] }}
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.85rem;margin-bottom:1.5rem;">
+            @foreach([
+                ['fa-newspaper','#EDE9FE','#7C3AED', $nbArticles,   'Articles'],
+                ['fa-lightbulb','#FEF9C3','#854D0E', $nbIdees,      'Idées'],
+                ['fa-folder',   '#DBEAFE','#1D4ED8', $nbProjPerso,  'Projets personnels'],
+                ['fa-users',    '#D1FAE5','#065F46', $nbProjCollab, 'Projets collaboratifs'],
+                ['fa-handshake','#FCE7F3','#BE185D', $nbCollabs,    'Participations'],
+                ['fa-eye',      '#F3F4F6','#374151', $totalVues,    'Vues totales'],
+                ['fa-heart',    '#FEE2E2','#DC2626', $totalLikes,   'Likes reçus'],
+            ] as [$icon, $bg, $color, $val, $label])
+                <div style="background:#fff;border:1px solid #F3F4F6;border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:0.85rem;">
+                    <div style="width:38px;height:38px;border-radius:10px;background:{{ $bg }};color:{{ $color }};display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;">
+                        <i class="fas {{ $icon }}"></i>
+                    </div>
+                    <div>
+                        <div style="font-family:'Urbanist',sans-serif;font-weight:800;font-size:1.3rem;color:#111827;line-height:1;">{{ number_format($val) }}</div>
+                        <div style="font-size:0.73rem;color:#9CA3AF;margin-top:0.15rem;font-weight:500;">{{ $label }}</div>
+                    </div>
                 </div>
-                <div class="pub-card-title">{{ $pub->titre }}</div>
-                @if($pub->contenu)
-                    <p class="pub-card-excerpt">{{ Str::limit(strip_tags($pub->contenu), 150) }}</p>
-                @endif
-                <div class="pub-card-footer">
-                    <span><i class="fas fa-eye"></i> {{ $pub->nb_vues }}</span>
-                    <span><i class="fas fa-heart"></i> {{ $pub->nb_likes }}</span>
-                    <span><i class="fas fa-comment"></i> {{ $pub->nb_commentaires }}</span>
-                    <span class="ms-auto">{{ $pub->date_publication->format('d M Y') }}</span>
-                </div>
-            </a>
-        @empty
-            <div class="empty-pubs">
-                <i class="fas fa-folder-open"></i>
-                <p>{{ $utilisateur->prenom }} n'a pas encore de publication publique.</p>
-            </div>
-        @endforelse
+            @endforeach
+        </div>
+
+        <div style="background:#F9FAFB;border:1px solid #F3F4F6;border-radius:12px;padding:1.25rem;text-align:center;">
+            <p style="font-size:0.85rem;color:#9CA3AF;margin:0;">
+                Pour accéder aux publications de {{ $utilisateur->prenom }}, <a href="{{ route('register') }}" style="color:#7C3AED;font-weight:600;text-decoration:none;">créez un compte</a> ou <a href="{{ route('login') }}" style="color:#7C3AED;font-weight:600;text-decoration:none;">connectez-vous</a>.
+            </p>
+        </div>
     </div>
 
 </div>
