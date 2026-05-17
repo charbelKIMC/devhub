@@ -39,7 +39,7 @@ class AdminController extends Controller
         $projetsSansMentor = \App\Models\ProjetCollaboratif::with(['publication.auteur'])
             ->whereNull('mentor_id')
             ->where('taille_equipe_actuelle', '>', 0)
-            ->latest('id')
+            ->orderByDesc('publication_id')
             ->get();
 
         $mentorsDisponibles = Utilisateur::where('role', 'mentor')
