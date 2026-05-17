@@ -157,6 +157,60 @@
                 </div>
             @endforelse
         </div>
-        
+
+        {{-- Projets collaboratifs sans mentor --}}
+        @if($projetsSansMentor->isNotEmpty())
+        <div class="recent-section" style="grid-column:1/-1;margin-top:0.5rem;">
+            <div class="recent-header">
+                <span class="recent-title">
+                    <i class="fas fa-exclamation-triangle me-2" style="color:#D97706;"></i>
+                    Projets collaboratifs sans mentor
+                    <span style="background:#FEF3C7;color:#92400E;font-size:0.7rem;font-weight:700;padding:0.15rem 0.55rem;border-radius:10px;margin-left:0.4rem;">{{ $projetsSansMentor->count() }}</span>
+                </span>
+            </div>
+
+            @if($mentorsDisponibles->isEmpty())
+                <div style="padding:1.25rem;background:#FEF3C7;border-radius:8px;font-size:0.82rem;color:#92400E;margin:0.75rem 0;">
+                    <i class="fas fa-exclamation-circle me-1"></i>
+                    Aucun mentor disponible actuellement (tous ont atteint leur quota de 3 projets).
+                </div>
+            @endif
+
+            @foreach($projetsSansMentor as $pc)
+                @php $pub = $pc->publication; @endphp
+                <div style="display:flex;align-items:center;gap:1rem;padding:0.85rem 0;border-bottom:1px solid var(--gray-100);">
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:700;font-size:0.875rem;color:var(--gray-900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            {{ $pub?->titre ?? '—' }}
+                        </div>
+                        <div style="font-size:0.75rem;color:var(--gray-400);margin-top:0.15rem;">
+                            Par {{ $pub?->auteur?->prenom }} {{ $pub?->auteur?->nom }} &mdash;
+                            {{ $pc->taille_equipe_actuelle }} membre{{ $pc->taille_equipe_actuelle > 1 ? 's' : '' }}
+                        </div>
+                    </div>
+
+                    @if($mentorsDisponibles->isNotEmpty())
+                        <form action="{{ route('admin.projets.attribuer.mentor', $pc->publication_id) }}" method="POST"
+                              style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;"
+                              data-confirm="Attribuer ce mentor à « {{ $pub?->titre }} » ?"
+                              data-title="Confirmer l'attribution" data-type="success">
+                            @csrf
+                            <select name="mentor_id"
+                                    style="padding:0.35rem 0.65rem;border:1.5px solid var(--gray-200);border-radius:8px;font-size:0.78rem;font-family:'DM Sans',sans-serif;background:white;outline:none;">
+                                @foreach($mentorsDisponibles as $m)
+                                    <option value="{{ $m->id }}">{{ $m->prenom }} {{ $m->nom }} ({{ $m->nb_actifs }}/3)</option>
+                                @endforeach
+                            </select>
+                            <button type="submit"
+                                    style="padding:0.35rem 0.85rem;background:#D1FAE5;color:#065F46;border:1.5px solid #6EE7B7;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+                                <i class="fas fa-check me-1"></i>Attribuer
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+        @endif
+
     </div>
 @endsection

@@ -35,7 +35,43 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'derniersUtilisateurs', 'dernieresAttributions'));
+        // Projets collaboratifs avec membres mais sans mentor attribué
+        $projetsSansMentor = \App\Models\ProjetCollaboratif::with(['publication.auteur'])
+            ->whereNull('mentor_id')
+            ->where('taille_equipe_actuelle', '>', 0)
+            ->latest('id')
+            ->get();
+
+        $mentorsDisponibles = Utilisateur::where('role', 'mentor')
+            ->where('statut', 'actif')
+            ->withCount(['projetsEnMentorat as nb_actifs' => fn($q) =>
+                $q->whereIn('phase', ['ouvert', 'en_cours'])
+            ])
+            ->having('nb_actifs', '<', 3)
+            ->orderBy('nb_actifs')
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'stats', 'derniersUtilisateurs', 'dernieresAttributions',
+            'projetsSansMentor', 'mentorsDisponibles'
+        ));
+    }
+
+    public function attribuerMentorProjet(Request $request, $id)
+    {
+        $request->validate(['mentor_id' => 'required|exists:utilisateurs,id']);
+
+        $projetCol = \App\Models\ProjetCollaboratif::whereNull('mentor_id')->findOrFail($id);
+        $pub       = Publication::findOrFail($projetCol->publication_id);
+        $mentor    = Utilisateur::findOrFail($request->mentor_id);
+
+        $conversation = \App\Models\Conversation::where('type_conversation', 'groupe_projet')
+            ->where('projet_collaboratif_id', $projetCol->publication_id)
+            ->first();
+
+        \App\Jobs\AttribuerMentorJob::attribuer($mentor, $projetCol, $pub, $conversation);
+
+        return back()->with('success', $mentor->prenom . ' ' . $mentor->nom . ' a été attribué comme mentor du projet "' . $pub->titre . '".');
     }
 
     public function mentors()

@@ -283,6 +283,19 @@ class PublicationController extends Controller
             ]);
         }
 
+        // Remplacement des images si de nouvelles sont uploadées
+        if ($request->hasFile('images')) {
+            \App\Models\PublicationMedia::where('publication_id', $publication->id)->delete();
+            foreach ($request->file('images') as $index => $image) {
+                $chemin = $this->uploadImage($image);
+                \App\Models\PublicationMedia::create([
+                    'publication_id' => $publication->id,
+                    'chemin'         => $chemin,
+                    'ordre'          => $index + 1,
+                ]);
+            }
+        }
+
         // ← Redirection vers le dashboard avec message succès
         return redirect()->route('dashboard')
             ->with('success', 'Publication "' . $publication->titre . '" mise à jour avec succès.');
