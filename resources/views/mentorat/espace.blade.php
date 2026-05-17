@@ -148,7 +148,7 @@
         <!-- Avatar -->
         <div class="mentore-ava">
             @if($mentore->photo)
-                <img src="{{ asset('storage/'.$mentore->photo) }}" alt="">
+                <img src="{{ $mentore->photo_url }}" alt="">
             @else
                 {{ strtoupper(substr($mentore->prenom, 0, 1)) }}
             @endif

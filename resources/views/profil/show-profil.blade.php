@@ -36,7 +36,7 @@
     <div class="profile-avatar-zone">
         <div class="profile-avatar-big">
             @if($utilisateur->photo)
-                <img src="{{ asset('storage/' . $utilisateur->photo) }}" alt="{{ $utilisateur->prenom }}">
+                <img src="{{ $utilisateur->photo_url }}" alt="{{ $utilisateur->prenom }}">
             @else
                 {{ strtoupper(substr($utilisateur->prenom, 0, 1)) }}
             @endif

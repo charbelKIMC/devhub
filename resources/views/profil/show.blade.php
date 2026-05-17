@@ -359,7 +359,7 @@
         <div class="profil-identity-row">
             <div class="profil-avatar-zone">
                 @if($utilisateur->photo)
-                    <img src="{{ asset('storage/'.$utilisateur->photo) }}" class="profil-avatar" alt="">
+                    <img src="{{ $utilisateur->photo_url }}" class="profil-avatar" alt="">
                 @else
                     <div class="profil-avatar-text">
                         {{ strtoupper(substr($utilisateur->prenom, 0, 1)) }}
@@ -617,7 +617,7 @@
                             <div class="photo-wrap">
                                 <div class="photo-preview">
                                     @if(Auth::user()->photo)
-                                        <img src="{{ asset('storage/'.Auth::user()->photo) }}" id="photoPreview" alt="">
+                                        <img src="{{ Auth::user()->photo_url }}" id="photoPreview" alt="">
                                     @else
                                         <span id="photoPlaceholder">{{ strtoupper(substr(Auth::user()->prenom,0,1)) }}</span>
                                     @endif

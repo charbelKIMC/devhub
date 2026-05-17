@@ -53,7 +53,7 @@
                     <div class="pub-author-row">
                         <div class="pub-author-avatar">
                             @if($publication->auteur->photo)
-                                <img src="{{ asset('storage/' . $publication->auteur->photo) }}" alt="">
+                                <img src="{{ $publication->auteur->photo_url }}" alt="">
                             @else
                                 {{ strtoupper(substr($publication->auteur->prenom, 0, 1)) }}
                             @endif
@@ -175,7 +175,7 @@
                 <div class="author-profile">
                     <div class="author-profile-avatar">
                         @if($publication->auteur->photo)
-                            <img src="{{ asset('storage/' . $publication->auteur->photo) }}" alt="">
+                            <img src="{{ $publication->auteur->photo_url }}" alt="">
                         @else
                             {{ strtoupper(substr($publication->auteur->prenom, 0, 1)) }}
                         @endif

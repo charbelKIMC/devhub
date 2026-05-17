@@ -79,7 +79,7 @@
             <div class="profile-card-top">
                 <div class="profile-ava">
                     @if($utilisateur->photo)
-                        <img src="{{ asset('storage/'.$utilisateur->photo) }}" alt="">
+                        <img src="{{ $utilisateur->photo_url }}" alt="">
                     @else
                         {{ strtoupper(substr($utilisateur->prenom, 0, 1)) }}
                     @endif

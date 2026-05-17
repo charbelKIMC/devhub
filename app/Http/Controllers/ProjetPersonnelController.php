@@ -245,12 +245,12 @@ class ProjetPersonnelController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($developpeur->email)
                 ->send(new \App\Mail\MentorAutoAttribue($developpeur, $mentor));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail mentor auto attribue dev: ' . $e->getMessage()); }
 
         try {
             \Illuminate\Support\Facades\Mail::to($mentor->email)
                 ->send(new \App\Mail\NouveauMentoreAttribue($mentor, $developpeur));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail mentor auto attribue mentor: ' . $e->getMessage()); }
     }
 
     private function notifierAdminSansMatch(Utilisateur $developpeur): void

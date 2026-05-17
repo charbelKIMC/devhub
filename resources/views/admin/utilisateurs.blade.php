@@ -47,7 +47,7 @@
                     <td>
                         <div class="user-cell">
                             <div class="user-ava">
-                                @if($u->photo)<img src="{{ asset('storage/'.$u->photo) }}" alt="">
+                                @if($u->photo)<img src="{{ $u->photo_url }}" alt="">
                                 @else {{ strtoupper(substr($u->prenom,0,1)) }} @endif
                             </div>
                             <div>

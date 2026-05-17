@@ -32,7 +32,7 @@
             <div class="admin-user-info">
                 <div class="admin-user-ava">
                     @if(Auth::user()->photo)
-                        <img src="{{ asset('storage/'.Auth::user()->photo) }}" alt="">
+                        <img src="{{ Auth::user()->photo_url }}" alt="">
                     @else
                         {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}
                     @endif

@@ -113,7 +113,7 @@ class MentorActivationController extends Controller
             Mail::send('emails.mentor-compte-cree', ['mentor' => $mentor], function ($mail) use ($mentor) {
                 $mail->to($mentor->email)->subject('Votre compte mentor est activé – DevHub');
             });
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail mentor compte cree: ' . $e->getMessage()); }
 
         return redirect()->route('welcome.splash');
     }

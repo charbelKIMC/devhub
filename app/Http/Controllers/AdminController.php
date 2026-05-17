@@ -229,7 +229,7 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($mentor->email)
                 ->send(new \App\Mail\AttributionMentor($mentor, $mentore));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail attribution mentor: ' . $e->getMessage()); }
 
         $notifMentor = \App\Models\Notification::create([
             'destinataire_id' => $request->mentor_id,
@@ -296,7 +296,7 @@ class AdminController extends Controller
                 $mail->to($candidature->email)
                      ->subject('Candidature acceptée – Créez votre compte mentor DevHub');
             });
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail mentor accepte externe: ' . $e->getMessage()); }
 
         return redirect()->route('admin.candidatures.externes')
             ->with('success', 'Candidature acceptée. Un email d\'activation a été envoyé au candidat.');
@@ -316,7 +316,7 @@ class AdminController extends Controller
                 $mail->to($candidature->email)
                      ->subject('Votre candidature mentor – DevHub');
             });
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail mentor refuse: ' . $e->getMessage()); }
 
         return redirect()->route('admin.candidatures.externes')
             ->with('success', 'Candidature refusée. Un email a été envoyé au candidat.');

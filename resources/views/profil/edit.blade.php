@@ -38,7 +38,7 @@
                             <div class="photo-edit-wrap">
                                 <div class="photo-edit-preview">
                                     @if(Auth::user()->photo)
-                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="photo" id="photoPreview">
+                                        <img src="{{ Auth::user()->photo_url }}" alt="photo" id="photoPreview">
                                     @else
                                         <div class="photo-placeholder-lg" id="photoPlaceholder">
                                             {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}

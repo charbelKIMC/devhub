@@ -87,7 +87,7 @@
                 <a href="{{ route('profil.show', $dev->id) }}" class="result-dev-card">
                     <div class="result-dev-avatar">
                         @if($dev->photo)
-                            <img src="{{ asset('storage/' . $dev->photo) }}" alt="">
+                            <img src="{{ $dev->photo_url }}" alt="">
                         @else
                             {{ strtoupper(substr($dev->prenom, 0, 1)) }}
                         @endif

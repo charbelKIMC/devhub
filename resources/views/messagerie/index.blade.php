@@ -204,7 +204,7 @@
         <div class="rail-spacer"></div>
         <a href="{{ route('profil.show', Auth::user()->id) }}" class="rail-user-avatar">
             @if(Auth::user()->photo)
-                <img src="{{ asset('storage/'.Auth::user()->photo) }}" alt="">
+                <img src="{{ Auth::user()->photo_url }}" alt="">
             @else
                 {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}
             @endif
@@ -273,7 +273,7 @@
                             @elseif($estMentorat)
                                 <i class="fas fa-crown" style="font-size:1rem;color:#92400E;"></i>
                             @elseif($autre && $autre->photo)
-                                <img src="{{ asset('storage/'.$autre->photo) }}" alt="">
+                                <img src="{{ $autre->photo_url }}" alt="">
                             @elseif($autre)
                                 {{ strtoupper(substr($autre->prenom, 0, 1)) }}
                             @endif
@@ -343,7 +343,7 @@
                     @elseif($estConvMentorat)
                         <i class="fas fa-crown" style="font-size:1.1rem;color:#92400E;"></i>
                     @elseif($interlocuteur->photo)
-                        <img src="{{ asset('storage/'.$interlocuteur->photo) }}" alt="">
+                        <img src="{{ $interlocuteur->photo_url }}" alt="">
                     @else
                         {{ strtoupper(substr($interlocuteur->prenom, 0, 1)) }}
                     @endif
@@ -403,7 +403,7 @@
                                         <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem;">
                                             <div style="width:24px;height:24px;border-radius:50%;background:var(--purple-light);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;overflow:hidden;">
                                                 @if($p->photo)
-                                                    <img src="{{ asset('storage/'.$p->photo) }}" style="width:100%;height:100%;object-fit:cover;">
+                                                    <img src="{{ $p->photo_url }}" style="width:100%;height:100%;object-fit:cover;">
                                                 @else
                                                     {{ strtoupper(substr($p->prenom,0,1)) }}
                                                 @endif
@@ -466,7 +466,7 @@
                         <div class="msg-ava {{ $isMoi ? 'ghost' : '' }}">
                             @if(!$isMoi)
                                 @if($expediteur?->photo)
-                                    <img src="{{ asset('storage/'.$expediteur->photo) }}" alt="">
+                                    <img src="{{ $expediteur->photo_url }}" alt="">
                                 @else
                                     {{ strtoupper(substr($expediteur?->prenom ?? '?', 0, 1)) }}
                                 @endif
@@ -496,7 +496,7 @@
                 <div class="typing-indicator" id="typingIndicator">
                     <div class="msg-ava">
                         @if($interlocuteur?->photo)
-                            <img src="{{ asset('storage/'.$interlocuteur->photo) }}" alt="">
+                            <img src="{{ $interlocuteur->photo_url }}" alt="">
                         @else
                             {{ strtoupper(substr($interlocuteur?->prenom ?? '?', 0, 1)) }}
                         @endif

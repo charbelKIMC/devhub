@@ -217,7 +217,7 @@
 
                     {{-- Image ou placeholder --}}
                     @if($dev->photo)
-                        <img src="{{ asset('storage/'.$dev->photo) }}" alt="{{ $dev->prenom }}" class="dev-card-bg">
+                        <img src="{{ $dev->photo_url }}" alt="{{ $dev->prenom }}" class="dev-card-bg">
                     @else
                         <div class="dev-card-placeholder">
                             {{ strtoupper(substr($dev->prenom, 0, 1)) }}

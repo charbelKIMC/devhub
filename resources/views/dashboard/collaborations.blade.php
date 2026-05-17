@@ -415,7 +415,7 @@
                                     <div class="membre-chip">
                                         <div class="membre-ava">
                                             @if($membre->utilisateur->photo)
-                                                <img src="{{ asset('storage/'.$membre->utilisateur->photo) }}" alt="">
+                                                <img src="{{ $membre->utilisateur->photo_url }}" alt="">
                                             @else
                                                 {{ strtoupper(substr($membre->utilisateur->prenom,0,1)) }}
                                             @endif
@@ -445,7 +445,7 @@
                                 <!-- Avatar candidat -->
                                 <div class="cand-avatar">
                                     @if($cand->utilisateur?->photo)
-                                        <img src="{{ asset('storage/'.$cand->utilisateur->photo) }}" alt="">
+                                        <img src="{{ $cand->utilisateur->photo_url }}" alt="">
                                     @else
                                         {{ strtoupper(substr($cand->utilisateur?->prenom ?? '?', 0, 1)) }}
                                     @endif

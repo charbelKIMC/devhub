@@ -57,7 +57,7 @@
             @forelse($derniers as $u)
                 <div class="recent-item">
                     <div class="recent-ava">
-                        @if($u->photo)<img src="{{ asset('storage/'.$u->photo) }}" alt="">
+                        @if($u->photo)<img src="{{ $u->photo_url }}" alt="">
                         @else {{ strtoupper(substr($u->prenom,0,1)) }} @endif
                     </div>
                     <div>
@@ -83,7 +83,7 @@
             @forelse($mentors as $m)
                 <div class="recent-item">
                     <div class="recent-ava" style="background:#D1FAE5;color:#065F46;">
-                        @if($m->photo)<img src="{{ asset('storage/'.$m->photo) }}" alt="">
+                        @if($m->photo)<img src="{{ $m->photo_url }}" alt="">
                         @else {{ strtoupper(substr($m->prenom,0,1)) }} @endif
                     </div>
                     <div>
@@ -116,7 +116,7 @@
                     <!-- Mentoré -->
                     <div class="recent-ava" style="background:var(--purple-light);color:var(--purple);">
                         @if($rel->mentore?->photo)
-                            <img src="{{ asset('storage/'.$rel->mentore->photo) }}" alt="">
+                            <img src="{{ $rel->mentore->photo_url }}" alt="">
                         @else
                             {{ strtoupper(substr($rel->mentore?->prenom ?? '?', 0, 1)) }}
                         @endif
@@ -134,7 +134,7 @@
                     <!-- Mentor -->
                     <div class="recent-ava" style="background:#D1FAE5;color:#065F46;">
                         @if($rel->mentor?->photo)
-                            <img src="{{ asset('storage/'.$rel->mentor->photo) }}" alt="">
+                            <img src="{{ $rel->mentor->photo_url }}" alt="">
                         @else
                             {{ strtoupper(substr($rel->mentor?->prenom ?? '?', 0, 1)) }}
                         @endif

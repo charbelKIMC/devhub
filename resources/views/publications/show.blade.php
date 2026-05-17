@@ -482,7 +482,7 @@
             <a href="{{ route('profil.show', $publication->auteur->id) }}" class="header-author">
                 <div class="header-avatar">
                     @if($publication->auteur->photo)
-                        <img src="{{ asset('storage/'.$publication->auteur->photo) }}" alt="">
+                        <img src="{{ $publication->auteur->photo_url }}" alt="">
                     @else
                         {{ strtoupper(substr($publication->auteur->prenom, 0, 1)) }}
                     @endif
@@ -688,7 +688,7 @@
                             <div class="comment-item" id="c-{{ $c->id }}">
                                 <div class="comment-ava">
                                     @if($c->utilisateur->photo)
-                                        <img src="{{ asset('storage/'.$c->utilisateur->photo) }}" alt="">
+                                        <img src="{{ $c->utilisateur->photo_url }}" alt="">
                                     @else
                                         {{ strtoupper(substr($c->utilisateur->prenom, 0, 1)) }}
                                     @endif
@@ -728,7 +728,7 @@
                             <div class="comment-form-wrap">
                                 <div class="comment-form-ava">
                                     @if(Auth::user()->photo)
-                                        <img src="{{ asset('storage/'.Auth::user()->photo) }}" alt="">
+                                        <img src="{{ Auth::user()->photo_url }}" alt="">
                                     @else
                                         {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}
                                     @endif

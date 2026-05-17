@@ -91,6 +91,13 @@ class Utilisateur extends Authenticatable {
         return $this->belongsToMany(Conversation::class, 'participants_conversation', 'utilisateur_id', 'conversation_id');
     }
 
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if (!$this->photo) return null;
+        if (str_starts_with($this->photo, 'http')) return $this->photo;
+        return asset('storage/' . $this->photo);
+    }
+
     // Helpers
     public function isDeveloppeur()
     {

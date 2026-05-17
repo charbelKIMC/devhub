@@ -200,7 +200,7 @@
                                 <div class="mentor-card-top">
                                     <div class="mentor-ava">
                                         @if($mentor->photo)
-                                            <img src="{{ asset('storage/'.$mentor->photo) }}" alt="">
+                                            <img src="{{ $mentor->photo_url }}" alt="">
                                         @else
                                             {{ strtoupper(substr($mentor->prenom, 0, 1)) }}
                                         @endif

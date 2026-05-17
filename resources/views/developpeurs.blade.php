@@ -50,7 +50,7 @@
 
                 {{-- Image plein cadre ou placeholder --}}
                 @if($dev->photo)
-                    <img src="{{ asset('storage/'.$dev->photo) }}"
+                    <img src="{{ $dev->photo_url }}"
                          alt="{{ $dev->prenom }}"
                          class="dev-card-bg">
                 @else

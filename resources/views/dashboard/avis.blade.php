@@ -285,7 +285,7 @@
                             <!-- Avatar -->
                             <div class="avis-avatar">
                                 @if($a->auteur?->photo)
-                                    <img src="{{ asset('storage/'.$a->auteur->photo) }}" alt="">
+                                    <img src="{{ $a->auteur->photo_url }}" alt="">
                                 @else
                                     {{ strtoupper(substr($a->auteur?->prenom ?? '?', 0, 1)) }}
                                 @endif

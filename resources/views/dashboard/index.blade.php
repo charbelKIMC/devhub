@@ -28,7 +28,7 @@
                     <div class="dev-suggest-item">
                         <div class="dev-suggest-avatar">
                             @if($dev->photo)
-                                <img src="{{ asset('storage/' . $dev->photo) }}" alt="">
+                                <img src="{{ $dev->photo_url }}" alt="">
                             @else
                                 {{ strtoupper(substr($dev->prenom, 0, 1)) }}
                             @endif
@@ -74,7 +74,7 @@
                     <div class="publication-header" onclick="event.stopPropagation();">
                         <div >
                             @if($pub->auteur->photo)
-                                <img src="{{ asset('storage/' . $pub->auteur->photo) }}"
+                                <img src="{{ $pub->auteur->photo_url }}"
                                     alt="" class="author-avatar">
                             @else
                                 <div class="author-avatar-text">
@@ -307,7 +307,7 @@
                                         @elseif($estMentorat)
                                             <i class="fas fa-crown" style="font-size:0.9rem;color:#92400E;"></i>
                                         @elseif($autre && $autre->photo)
-                                            <img src="{{ asset('storage/'.$autre->photo) }}"
+                                            <img src="{{ $autre->photo_url }}"
                                                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
                                         @elseif($autre)
                                             {{ strtoupper(substr($autre->prenom, 0, 1)) }}

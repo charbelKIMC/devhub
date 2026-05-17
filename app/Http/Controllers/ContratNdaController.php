@@ -125,12 +125,12 @@ class ContratNdaController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($candidat->email)
                 ->send(new \App\Mail\CollabContratSigneCandidat($candidat, $pub, $chemin));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail contrat signe candidat: ' . $e->getMessage()); }
 
         try {
             \Illuminate\Support\Facades\Mail::to($auteur->email)
                 ->send(new \App\Mail\CollabContratSigneAuteur($auteur, $candidat, $pub, $chemin));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail contrat signe auteur: ' . $e->getMessage()); }
 
         // Premier membre → mentor attribué immédiatement
         if ($projetCol->taille_equipe_actuelle == 1) {

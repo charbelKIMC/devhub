@@ -292,7 +292,7 @@
                             class="fav-author" onclick="event.stopPropagation()">
                                 <div class="fav-author-ava">
                                     @if($pub->auteur?->photo)
-                                        <img src="{{ asset('storage/'.$pub->auteur->photo) }}" alt="">
+                                        <img src="{{ $pub->auteur->photo_url }}" alt="">
                                     @else
                                         {{ strtoupper(substr($pub->auteur?->prenom ?? '?', 0, 1)) }}
                                     @endif

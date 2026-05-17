@@ -61,8 +61,7 @@ class ProfilController extends Controller
 
         // Photo
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('photos', 'public');
-            $data['photo'] = $path;
+            $data['photo'] = $this->uploadPhoto($request->file('photo'));
         }
 
         // Calcul pourcentage complétion
@@ -106,7 +105,7 @@ class ProfilController extends Controller
         // Email de bienvenue
         try {
             Mail::to($utilisateur->email)->send(new \App\Mail\BienvenueDevHub($utilisateur));
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) { \Log::error('Mail bienvenue: ' . $e->getMessage()); }
 
         return redirect()->route('welcome.splash');
     }
@@ -132,10 +131,9 @@ class ProfilController extends Controller
 
         if ($request->hasFile('photo')) {
             if ($utilisateur->photo) {
-                Storage::disk('public')->delete($utilisateur->photo);
+                $this->deletePhoto($utilisateur->photo);
             }
-            $path = $request->file('photo')->store('photos', 'public');
-            $data['photo'] = $path;
+            $data['photo'] = $this->uploadPhoto($request->file('photo'));
         }
 
         $utilisateur->update($data);
@@ -169,6 +167,40 @@ class ProfilController extends Controller
 
         return redirect()->route('profil.show', $user->id)
             ->with('success', 'Mot de passe mis à jour avec succès.');
+    }
+
+    private function uploadPhoto($file): string
+    {
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        $preset    = env('CLOUDINARY_UPLOAD_PRESET');
+
+        if ($cloudName && $preset) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::attach(
+                    'file',
+                    file_get_contents($file->getRealPath()),
+                    $file->getClientOriginalName()
+                )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                    'upload_preset' => $preset,
+                ]);
+
+                if ($response->successful() && $response->json('secure_url')) {
+                    return $response->json('secure_url');
+                }
+                \Log::error('Cloudinary upload failed: ' . $response->body());
+            } catch (\Throwable $e) {
+                \Log::error('Cloudinary upload exception: ' . $e->getMessage());
+            }
+        }
+
+        return $file->store('photos', 'public');
+    }
+
+    private function deletePhoto(string $photo): void
+    {
+        if (!str_starts_with($photo, 'http')) {
+            Storage::disk('public')->delete($photo);
+        }
     }
 
     // Liste des développeurs pour la page publique

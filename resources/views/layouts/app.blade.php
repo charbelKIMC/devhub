@@ -145,7 +145,7 @@
                     <div class="dropdown-custom">
                         <button class="user-btn" id="userBtn">
                             @if(Auth::user()->photo)
-                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="photo" class="user-avatar">
+                                <img src="{{ Auth::user()->photo_url }}" alt="photo" class="user-avatar">
                             @else
                                 <div class="user-avatar-text">{{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}</div>
                             @endif
@@ -157,7 +157,7 @@
                             <div class="user-info">
                                 <div class="user-avatar-large">
                                     @if(Auth::user()->photo)
-                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="photo">
+                                        <img src="{{ Auth::user()->photo_url }}" alt="photo">
                                     @else
                                         {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}
                                     @endif
