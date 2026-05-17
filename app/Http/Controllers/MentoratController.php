@@ -6,6 +6,7 @@ use App\Models\RelationMentorat;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class MentoratController extends Controller
 {
@@ -106,7 +107,8 @@ class MentoratController extends Controller
         $request->validate([
             'prenom'            => ['required','string','max:50','regex:/^[\pL\s\-\']+$/u'],
             'nom'               => ['required','string','max:50','regex:/^[\pL\s\-\']+$/u'],
-            'email'             => ['required','email:rfc','max:255','unique:utilisateurs,email','unique:candidatures_mentor_externe,email'],
+            'email'             => ['required','email:rfc','max:255','unique:utilisateurs,email',
+                                    Rule::unique('candidatures_mentor_externe','email')->where(fn($q) => $q->where('statut','!=','refusée'))],
             'telephone'         => ['required','string','max:20','regex:/^\+?[0-9\s\-\(\)]{8,20}$/'],
             'localisation'      => ['required','string','max:100','regex:/^[\pL0-9\s\,\.\-]+$/u'],
             'specialite'        => ['required','string','in:'.implode(',', $specialitesAutorisees)],
@@ -123,7 +125,7 @@ class MentoratController extends Controller
         ], [
             'prenom.regex'            => 'Le prénom ne doit contenir que des lettres.',
             'nom.regex'               => 'Le nom ne doit contenir que des lettres.',
-            'email.unique'            => 'Une candidature existe déjà avec cet email.',
+            'email.unique'            => 'Une candidature active existe déjà avec cet email.',
             'telephone.regex'         => 'Le numéro de téléphone n\'est pas valide.',
             'localisation.regex'      => 'La localisation contient des caractères non autorisés.',
             'specialite.in'           => 'Veuillez choisir une spécialité dans la liste.',
@@ -137,16 +139,10 @@ class MentoratController extends Controller
             'piece_identite.mimes'    => 'La pièce d\'identité doit être au format PDF, JPG ou PNG.',
         ]);
 
-        // Vérification DNS de l'email
-        $domain = substr(strrchr($request->email, '@'), 1);
-        $emailValide = false;
-        try {
-            $emailValide = checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
-        } catch (\Throwable) {}
-
-        if (!$emailValide) {
-            return back()->withErrors(['email' => 'Cette adresse email n\'existe pas. Veuillez renseigner un email réel.'])->withInput();
-        }
+        // Supprimer l'ancienne candidature refusée si le candidat retente
+        \App\Models\CandidatureMentorExterne::where('email', $request->email)
+            ->where('statut', 'refusée')
+            ->delete();
 
         // Sauvegarde des fichiers
         $cheminCv       = $request->file('cv')->store('candidatures/cv', 'public');
