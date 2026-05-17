@@ -9,17 +9,23 @@ use Symfony\Component\Mime\MessageConverter;
 
 class BrevoTransport extends AbstractTransport
 {
-    public function __construct(private string $apiKey) {}
+    public function __construct(private string $apiKey)
+    {
+        parent::__construct();
+    }
 
     protected function doSend(SentMessage $message): void
     {
+        if (empty($this->apiKey)) {
+            \Log::error('Brevo: BREVO_API_KEY est vide — email non envoyé.');
+            return;
+        }
+
         $email = MessageConverter::toEmail($message->getOriginalMessage());
 
-        $from = $email->getFrom();
-        $sender = [
-            'email' => $from[0]->getAddress(),
-            'name'  => $from[0]->getName() ?: 'DevHub',
-        ];
+        $fromList  = $email->getFrom();
+        $fromEmail = !empty($fromList) ? $fromList[0]->getAddress() : config('mail.from.address');
+        $fromName  = (!empty($fromList) && $fromList[0]->getName()) ? $fromList[0]->getName() : config('mail.from.name', 'DevHub');
 
         $to = [];
         foreach ($email->getTo() as $addr) {
@@ -30,9 +36,9 @@ class BrevoTransport extends AbstractTransport
         $textBody = $email->getTextBody();
 
         $payload = [
-            'sender'      => $sender,
+            'sender'      => ['email' => $fromEmail, 'name' => $fromName],
             'to'          => $to,
-            'subject'     => $email->getSubject(),
+            'subject'     => $email->getSubject() ?: '(sans objet)',
             'htmlContent' => $htmlBody ?: nl2br(htmlspecialchars((string) $textBody)),
         ];
 
@@ -40,13 +46,23 @@ class BrevoTransport extends AbstractTransport
             $payload['textContent'] = $textBody;
         }
 
-        $response = Http::withHeaders(['api-key' => $this->apiKey])
-            ->post('https://api.brevo.com/v3/smtp/email', $payload);
+        \Log::info('Brevo: tentative envoi', [
+            'to'      => array_column($to, 'email'),
+            'subject' => $payload['subject'],
+            'from'    => $fromEmail,
+        ]);
 
-        if (!$response->successful()) {
-            throw new \RuntimeException(
-                'Brevo API error: ' . $response->status() . ' — ' . $response->body()
-            );
+        $response = Http::withHeaders([
+            'api-key'      => $this->apiKey,
+            'Content-Type' => 'application/json',
+            'Accept'       => 'application/json',
+        ])->post('https://api.brevo.com/v3/smtp/email', $payload);
+
+        if ($response->successful()) {
+            \Log::info('Brevo: email envoyé', ['messageId' => $response->json('messageId')]);
+        } else {
+            \Log::error('Brevo: erreur API', ['status' => $response->status(), 'body' => $response->body()]);
+            throw new \RuntimeException('Brevo API ' . $response->status() . ': ' . $response->body());
         }
     }
 
