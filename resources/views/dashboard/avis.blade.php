@@ -37,37 +37,37 @@
         }
         .as-label { font-size: 0.72rem; color: var(--gray-400); margin-top: 0.1rem; }
 
-        /* Moyenne grande */
+        /* Moyenne compacte */
         .moyenne-card {
-            background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-            border-radius: 14px; padding: 1.25rem;
-            display: flex; align-items: center; gap: 1rem;
-            margin-bottom: 1.25rem; color: white;
+            background: white; border: 1px solid var(--gray-200);
+            border-radius: 12px; padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 1.25rem;
+            margin-bottom: 1.25rem;
         }
         .moyenne-number {
             font-family: 'Urbanist', sans-serif;
-            font-size: 3rem; font-weight: 800; line-height: 1;
+            font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--gray-900);
         }
-        .moyenne-stars { display: flex; gap: 0.2rem; margin: 0.25rem 0; }
-        .moyenne-stars i { font-size: 1rem; }
-        .moyenne-label { font-size: 0.82rem; opacity: 0.8; }
+        .moyenne-stars { display: flex; gap: 0.2rem; margin: 0.2rem 0; }
+        .moyenne-stars i { font-size: 0.85rem; }
+        .moyenne-label { font-size: 0.75rem; color: var(--gray-400); }
 
         /* Distribution étoiles */
         .star-dist { flex: 1; }
         .star-dist-row {
             display: flex; align-items: center; gap: 0.5rem;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.3rem;
         }
-        .star-dist-label { font-size: 0.75rem; opacity: 0.85; width: 20px; text-align: right; flex-shrink: 0; }
+        .star-dist-label { font-size: 0.72rem; color: var(--gray-500); width: 20px; text-align: right; flex-shrink: 0; }
         .star-dist-bar {
-            flex: 1; height: 6px; background: rgba(255,255,255,0.2);
+            flex: 1; height: 5px; background: var(--gray-100);
             border-radius: 3px; overflow: hidden;
         }
         .star-dist-fill {
             height: 100%; background: #F59E0B;
             border-radius: 3px; transition: width 0.6s ease;
         }
-        .star-dist-count { font-size: 0.72rem; opacity: 0.7; width: 20px; flex-shrink: 0; }
+        .star-dist-count { font-size: 0.7rem; color: var(--gray-400); width: 20px; flex-shrink: 0; }
 
         /* ─── TABS ─── */
         .avis-tabs {
@@ -170,7 +170,7 @@
 
         @media (max-width: 768px) {
             .avis-stats { grid-template-columns: repeat(2,1fr); }
-            .moyenne-card { flex-direction: column; }
+            .moyenne-card { flex-wrap: wrap; gap: 0.85rem; }
             .avis-card { grid-template-columns: auto 1fr; }
             .avis-note-circle { display: none; }
         }
@@ -236,14 +236,14 @@
                     @endfor
                 </div>
 
-                <div style="display:flex;flex-direction:column;gap:0.5rem;flex-shrink:0;">
-                    <div style="text-align:center;padding:0.75rem 1rem;background:rgba(255,255,255,0.1);border-radius:10px;">
-                        <div style="font-family:'Urbanist',sans-serif;font-size:1.25rem;font-weight:800;">{{ $avisPerso->count() }}</div>
-                        <div style="font-size:0.72rem;opacity:0.8;">Projets perso</div>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;flex-shrink:0;border-left:1px solid var(--gray-100);padding-left:1.25rem;">
+                    <div style="text-align:center;padding:0.5rem 0.85rem;background:var(--gray-50);border-radius:9px;">
+                        <div style="font-family:'Urbanist',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gray-900);">{{ $avisPerso->count() }}</div>
+                        <div style="font-size:0.7rem;color:var(--gray-400);">Projets perso</div>
                     </div>
-                    <div style="text-align:center;padding:0.75rem 1rem;background:rgba(255,255,255,0.1);border-radius:10px;">
-                        <div style="font-family:'Urbanist',sans-serif;font-size:1.25rem;font-weight:800;">{{ $avisCollab->count() }}</div>
-                        <div style="font-size:0.72rem;opacity:0.8;">Collaboratifs</div>
+                    <div style="text-align:center;padding:0.5rem 0.85rem;background:var(--gray-50);border-radius:9px;">
+                        <div style="font-family:'Urbanist',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gray-900);">{{ $avisCollab->count() }}</div>
+                        <div style="font-size:0.7rem;color:var(--gray-400);">Collaboratifs</div>
                     </div>
                 </div>
             </div>
