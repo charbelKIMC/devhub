@@ -52,22 +52,6 @@
         .moyenne-stars i { font-size: 0.72rem; }
         .moyenne-label { font-size: 0.68rem; color: var(--gray-400); }
 
-        /* Distribution étoiles */
-        .star-dist { min-width: 120px; }
-        .star-dist-row {
-            display: flex; align-items: center; gap: 0.4rem;
-            margin-bottom: 0.22rem;
-        }
-        .star-dist-label { font-size: 0.65rem; color: var(--gray-500); width: 16px; text-align: right; flex-shrink: 0; }
-        .star-dist-bar {
-            flex: 1; height: 4px; background: var(--gray-100);
-            border-radius: 2px; overflow: hidden;
-        }
-        .star-dist-fill {
-            height: 100%; background: #F59E0B;
-            border-radius: 2px; transition: width 0.6s ease;
-        }
-        .star-dist-count { font-size: 0.63rem; color: var(--gray-400); width: 16px; flex-shrink: 0; }
 
         /* ─── TABS ─── */
         .avis-tabs {
@@ -201,8 +185,8 @@
                 </div>
 
                 <div class="moyenne-card">
-                    <div style="text-align:center;flex-shrink:0;padding-right:0.9rem;border-right:1px solid var(--gray-100);">
-                        <div class="moyenne-number">{{ number_format($moyenneGlobale, 1) }}</div>
+                    <div class="moyenne-number">{{ number_format($moyenneGlobale, 1) }}</div>
+                    <div>
                         <div class="moyenne-stars">
                             @for($i = 1; $i <= 5; $i++)
                                 @if($i <= floor($moyenneGlobale))
@@ -215,18 +199,6 @@
                             @endfor
                         </div>
                         <div class="moyenne-label">{{ $totalAvis }} avis</div>
-                    </div>
-
-                    <div class="star-dist">
-                        @for($i = 5; $i >= 1; $i--)
-                            <div class="star-dist-row">
-                                <div class="star-dist-label">{{ $i }}<i class="fas fa-star ms-1" style="font-size:0.55rem;color:#F59E0B;"></i></div>
-                                <div class="star-dist-bar">
-                                    <div class="star-dist-fill" style="width:{{ $totalAvis > 0 ? round(($dist[$i]/$totalAvis)*100) : 0 }}%;"></div>
-                                </div>
-                                <div class="star-dist-count">{{ $dist[$i] }}</div>
-                            </div>
-                        @endfor
                     </div>
                 </div>
             </div>
