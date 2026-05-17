@@ -37,37 +37,37 @@
         }
         .as-label { font-size: 0.72rem; color: var(--gray-400); margin-top: 0.1rem; }
 
-        /* Moyenne compacte */
+        /* Moyenne inline header */
         .moyenne-card {
             background: white; border: 1px solid var(--gray-200);
-            border-radius: 12px; padding: 1rem 1.25rem;
-            display: flex; align-items: center; gap: 1.25rem;
-            margin-bottom: 1.25rem;
+            border-radius: 10px; padding: 0.6rem 1rem;
+            display: flex; align-items: center; gap: 0.9rem;
+            flex-shrink: 0;
         }
         .moyenne-number {
             font-family: 'Urbanist', sans-serif;
-            font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--gray-900);
+            font-size: 1.5rem; font-weight: 800; line-height: 1; color: var(--gray-900);
         }
-        .moyenne-stars { display: flex; gap: 0.2rem; margin: 0.2rem 0; }
-        .moyenne-stars i { font-size: 0.85rem; }
-        .moyenne-label { font-size: 0.75rem; color: var(--gray-400); }
+        .moyenne-stars { display: flex; gap: 0.15rem; margin: 0.15rem 0; }
+        .moyenne-stars i { font-size: 0.72rem; }
+        .moyenne-label { font-size: 0.68rem; color: var(--gray-400); }
 
         /* Distribution étoiles */
-        .star-dist { flex: 1; }
+        .star-dist { min-width: 120px; }
         .star-dist-row {
-            display: flex; align-items: center; gap: 0.5rem;
-            margin-bottom: 0.3rem;
+            display: flex; align-items: center; gap: 0.4rem;
+            margin-bottom: 0.22rem;
         }
-        .star-dist-label { font-size: 0.72rem; color: var(--gray-500); width: 20px; text-align: right; flex-shrink: 0; }
+        .star-dist-label { font-size: 0.65rem; color: var(--gray-500); width: 16px; text-align: right; flex-shrink: 0; }
         .star-dist-bar {
-            flex: 1; height: 5px; background: var(--gray-100);
-            border-radius: 3px; overflow: hidden;
+            flex: 1; height: 4px; background: var(--gray-100);
+            border-radius: 2px; overflow: hidden;
         }
         .star-dist-fill {
             height: 100%; background: #F59E0B;
-            border-radius: 3px; transition: width 0.6s ease;
+            border-radius: 2px; transition: width 0.6s ease;
         }
-        .star-dist-count { font-size: 0.7rem; color: var(--gray-400); width: 20px; flex-shrink: 0; }
+        .star-dist-count { font-size: 0.63rem; color: var(--gray-400); width: 16px; flex-shrink: 0; }
 
         /* ─── TABS ─── */
         .avis-tabs {
@@ -180,70 +180,53 @@
 @section('content')
     <main class="main-content">
 
-        <!-- Header -->
-        <div class="avis-page-header">
-            <div>
-                <h1 class="avis-page-title">
-                    <i class="fas fa-star me-2" style="color:#F59E0B;"></i>Avis reçus
-                </h1>
-                <p class="avis-page-sub">Les retours de la communauté sur vos projets</p>
-            </div>
-        </div>
-
         @if($avis->count() > 0)
 
             @php
-                $totalAvis    = $avis->count();
+                $totalAvis      = $avis->count();
                 $moyenneGlobale = $avis->avg('note');
-                $avisPerso    = $avis->filter(fn($a) => optional(\App\Models\Publication::find($a->publication_id))->type === 'projet_personnel');
-                $avisCollab   = $avis->filter(fn($a) => optional(\App\Models\Publication::find($a->publication_id))->type === 'projet_collaboratif');
-
-                // Distribution étoiles
+                $avisPerso      = $avis->filter(fn($a) => optional(\App\Models\Publication::find($a->publication_id))->type === 'projet_personnel');
+                $avisCollab     = $avis->filter(fn($a) => optional(\App\Models\Publication::find($a->publication_id))->type === 'projet_collaboratif');
                 $dist = [];
-                for ($i = 5; $i >= 1; $i--) {
-                    $dist[$i] = $avis->where('note', $i)->count();
-                }
+                for ($i = 5; $i >= 1; $i--) { $dist[$i] = $avis->where('note', $i)->count(); }
             @endphp
 
-            <!-- Carte moyenne -->
-            <div class="moyenne-card">
-                <div style="text-align:center;flex-shrink:0;">
-                    <div class="moyenne-number">{{ number_format($moyenneGlobale, 1) }}</div>
-                    <div class="moyenne-stars">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= floor($moyenneGlobale))
-                                <i class="fas fa-star" style="color:#F59E0B;"></i>
-                            @elseif($i - $moyenneGlobale < 1)
-                                <i class="fas fa-star-half-alt" style="color:#F59E0B;"></i>
-                            @else
-                                <i class="far fa-star" style="color:rgba(255,255,255,0.4);"></i>
-                            @endif
-                        @endfor
-                    </div>
-                    <div class="moyenne-label">{{ $totalAvis }} avis</div>
+            <!-- Header + carte moyenne sur la même ligne -->
+            <div class="avis-page-header">
+                <div>
+                    <h1 class="avis-page-title">
+                        <i class="fas fa-star me-2" style="color:#F59E0B;"></i>Avis reçus
+                    </h1>
+                    <p class="avis-page-sub">Les retours de la communauté sur vos projets</p>
                 </div>
 
-                <div class="star-dist">
-                    @for($i = 5; $i >= 1; $i--)
-                        <div class="star-dist-row">
-                            <div class="star-dist-label">{{ $i }}<i class="fas fa-star ms-1" style="font-size:0.6rem;color:#F59E0B;"></i></div>
-                            <div class="star-dist-bar">
-                                <div class="star-dist-fill"
-                                    style="width: {{ $totalAvis > 0 ? round(($dist[$i]/$totalAvis)*100) : 0 }}%;"></div>
-                            </div>
-                            <div class="star-dist-count">{{ $dist[$i] }}</div>
+                <div class="moyenne-card">
+                    <div style="text-align:center;flex-shrink:0;padding-right:0.9rem;border-right:1px solid var(--gray-100);">
+                        <div class="moyenne-number">{{ number_format($moyenneGlobale, 1) }}</div>
+                        <div class="moyenne-stars">
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= floor($moyenneGlobale))
+                                    <i class="fas fa-star" style="color:#F59E0B;"></i>
+                                @elseif($i - $moyenneGlobale < 1)
+                                    <i class="fas fa-star-half-alt" style="color:#F59E0B;"></i>
+                                @else
+                                    <i class="far fa-star" style="color:#E5E7EB;"></i>
+                                @endif
+                            @endfor
                         </div>
-                    @endfor
-                </div>
-
-                <div style="display:flex;flex-direction:column;gap:0.5rem;flex-shrink:0;border-left:1px solid var(--gray-100);padding-left:1.25rem;">
-                    <div style="text-align:center;padding:0.5rem 0.85rem;background:var(--gray-50);border-radius:9px;">
-                        <div style="font-family:'Urbanist',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gray-900);">{{ $avisPerso->count() }}</div>
-                        <div style="font-size:0.7rem;color:var(--gray-400);">Projets perso</div>
+                        <div class="moyenne-label">{{ $totalAvis }} avis</div>
                     </div>
-                    <div style="text-align:center;padding:0.5rem 0.85rem;background:var(--gray-50);border-radius:9px;">
-                        <div style="font-family:'Urbanist',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gray-900);">{{ $avisCollab->count() }}</div>
-                        <div style="font-size:0.7rem;color:var(--gray-400);">Collaboratifs</div>
+
+                    <div class="star-dist">
+                        @for($i = 5; $i >= 1; $i--)
+                            <div class="star-dist-row">
+                                <div class="star-dist-label">{{ $i }}<i class="fas fa-star ms-1" style="font-size:0.55rem;color:#F59E0B;"></i></div>
+                                <div class="star-dist-bar">
+                                    <div class="star-dist-fill" style="width:{{ $totalAvis > 0 ? round(($dist[$i]/$totalAvis)*100) : 0 }}%;"></div>
+                                </div>
+                                <div class="star-dist-count">{{ $dist[$i] }}</div>
+                            </div>
+                        @endfor
                     </div>
                 </div>
             </div>
