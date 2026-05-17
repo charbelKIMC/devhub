@@ -488,13 +488,13 @@
                         <div class="images-grid">
                             @foreach($publication->medias as $media)
                                 <div class="img-thumb">
-                                    <img src="{{ asset('storage/'.$media->chemin) }}" alt="image">
+                                    <img src="{{ $media->url }}" alt="image">
                                 </div>
                             @endforeach
                         </div>
                     @else
                         <div class="img-thumb-single">
-                            <img src="{{ asset('storage/'.$publication->medias->first()->chemin) }}" alt="image">
+                            <img src="{{ $publication->medias->first()->url }}" alt="image">
                         </div>
                     @endif
                 @endif

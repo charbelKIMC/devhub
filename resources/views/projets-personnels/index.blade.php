@@ -207,7 +207,7 @@
                     {{-- Image --}}
                     <div class="pp-card-img">
                         @if($pub->medias->isNotEmpty())
-                            <img src="{{ asset('storage/' . $pub->medias->first()->chemin) }}" alt="">
+                            <img src="{{ $pub->medias->first()->url }}" alt="">
                         @else
                             <i class="fas fa-folder"></i>
                         @endif

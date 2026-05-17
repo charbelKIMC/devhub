@@ -258,7 +258,7 @@
 
                         <!-- Image ou placeholder coloré -->
                         @if($media)
-                            <img src="{{ asset('storage/'.$media->chemin) }}"
+                            <img src="{{ $media->url }}"
                                 alt="" class="fav-card-img">
                         @else
                             <div class="fav-card-img-placeholder"

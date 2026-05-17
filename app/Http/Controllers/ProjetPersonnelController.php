@@ -76,7 +76,7 @@ class ProjetPersonnelController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
-                $chemin = $image->store('publications', 'public');
+                $chemin = $this->uploadImage($image);
                 \App\Models\PublicationMedia::create([
                     'publication_id' => $publication->id,
                     'chemin'         => $chemin,
@@ -267,5 +267,27 @@ class ProjetPersonnelController extends Controller
             'date_creation'   => now(),
         ]);
         try { broadcast(new \App\Events\NotificationCreee($notif)); } catch (\Throwable) {}
+    }
+
+    private function uploadImage($file): string
+    {
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        $preset    = env('CLOUDINARY_UPLOAD_PRESET');
+        if ($cloudName && $preset) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::attach(
+                    'file', file_get_contents($file->getRealPath()), $file->getClientOriginalName()
+                )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                    'upload_preset' => $preset,
+                ]);
+                if ($response->successful() && $response->json('secure_url')) {
+                    return $response->json('secure_url');
+                }
+                \Log::error('Cloudinary upload failed: ' . $response->body());
+            } catch (\Throwable $e) {
+                \Log::error('Cloudinary upload exception: ' . $e->getMessage());
+            }
+        }
+        return $file->store('publications', 'public');
     }
 }

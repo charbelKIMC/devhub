@@ -814,8 +814,8 @@
                     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;">
                         @foreach($publication->medias as $media)
                             <div style="border-radius:12px;overflow:hidden;cursor:pointer;"
-                                onclick="openSingleImage('{{ asset('storage/'.$media->chemin) }}')">
-                                <img src="{{ asset('storage/'.$media->chemin) }}"
+                                onclick="openSingleImage('{{ $media->url }}')">
+                                <img src="{{ $media->url }}"
                                     alt="image {{ $loop->iteration }}"
                                     style="width:100%;height:200px;object-fit:cover;display:block;transition:transform 0.3s ease;"
                                     onmouseover="this.style.transform='scale(1.04)'"
@@ -827,8 +827,8 @@
                     {{-- Image unique pleine largeur --}}
                     @foreach($publication->medias as $media)
                         <div style="border-radius:12px;overflow:hidden;margin-bottom:0.75rem;cursor:pointer;"
-                            onclick="openSingleImage('{{ asset('storage/'.$media->chemin) }}')">
-                            <img src="{{ asset('storage/'.$media->chemin) }}"
+                            onclick="openSingleImage('{{ $media->url }}')">
+                            <img src="{{ $media->url }}"
                                 alt="image"
                                 style="width:100%;max-height:500px;object-fit:contain;display:block;background:#f1f1f1;">
                         </div>

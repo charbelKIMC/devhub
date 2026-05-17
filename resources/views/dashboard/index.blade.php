@@ -143,13 +143,13 @@
                         @if($pub->type === 'projet_personnel' && $pub->medias->count() >= 3)
                             <div class="pub-media-grid">
                                 @foreach($pub->medias->take(3) as $media)
-                                    <img src="{{ asset('storage/'.$media->chemin) }}"
+                                    <img src="{{ $media->url }}"
                                         alt="image projet" class="pub-media-img">
                                 @endforeach
                             </div>
                         @else
                             <div class="pub-media-single">
-                                <img src="{{ asset('storage/'.$pub->medias->first()->chemin) }}"
+                                <img src="{{ $pub->medias->first()->url }}"
                                     alt="illustration" class="pub-media-cover">
                             </div>
                         @endif

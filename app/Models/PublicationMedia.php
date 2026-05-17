@@ -13,6 +13,12 @@ class PublicationMedia extends Model
         'publication_id', 'chemin', 'ordre'
     ];
 
+    public function getUrlAttribute(): string
+    {
+        if (str_starts_with($this->chemin, 'http')) return $this->chemin;
+        return asset('storage/' . $this->chemin);
+    }
+
     public function publication()
     {
         return $this->belongsTo(Publication::class, 'publication_id');
