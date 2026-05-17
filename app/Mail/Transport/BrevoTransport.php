@@ -47,6 +47,18 @@ class BrevoTransport extends AbstractTransport
             $payload['textContent'] = $textBody;
         }
 
+        // Pièces jointes
+        $attachments = [];
+        foreach ($email->getAttachments() as $part) {
+            $attachments[] = [
+                'content' => base64_encode($part->getBody()),
+                'name'    => $part->getFilename() ?? 'fichier',
+            ];
+        }
+        if (!empty($attachments)) {
+            $payload['attachment'] = $attachments;
+        }
+
         \Log::info('Brevo: tentative envoi', [
             'to'      => array_column($to, 'email'),
             'subject' => $payload['subject'],

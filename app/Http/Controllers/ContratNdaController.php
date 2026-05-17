@@ -162,18 +162,17 @@ class ContratNdaController extends Controller
                 'est_systeme'     => true,
             ]);
 
-            // Notifier l'admin
+            // Email à l'admin (pas de notification in-app — l'admin reçoit uniquement des mails)
             $admin = Utilisateur::where('role', 'admin')->first();
             if ($admin) {
-                $notif = Notification::create([
-                    'destinataire_id' => $admin->id,
-                    'type'            => 'mentor_attribue',
-                    'contenu'         => 'Aucun mentor disponible pour "' . $pub->titre . '". Attribution requise.',
-                    'lien'            => route('admin.dashboard'),
-                    'est_lue'         => false,
-                    'date_creation'   => now(),
-                ]);
-                try { broadcast(new \App\Events\NotificationCreee($notif)); } catch (\Throwable) {}
+                try {
+                    \Illuminate\Support\Facades\Mail::send('emails.admin-mentor-requis', [
+                        'titre' => $pub->titre,
+                        'lien'  => route('admin.dashboard'),
+                    ], function ($mail) use ($admin) {
+                        $mail->to($admin->email)->subject('Attribution mentor requise – DevHub');
+                    });
+                } catch (\Throwable $e) { \Log::error('Mail admin mentor requis: ' . $e->getMessage()); }
             }
 
             // Job différé : re-tenter dans 1 jour (au cas où un mentor se libère)

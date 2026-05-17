@@ -231,15 +231,26 @@
                         </a>
                     </li>
                     <li>
+                        @php $countPP = Auth::user()->publications()->where('type', 'projet_personnel')->count(); @endphp
                         <a href="{{ route('projets-personnels.index') }}"
                            class="nav-tab {{ request()->routeIs('projets-personnels.*') ? 'active' : '' }}">
                             <i class="fas fa-folder-open"></i> Projets personnels
+                            @if($countPP > 0)
+                                <span style="background:var(--gray-200);color:var(--gray-600);font-size:0.68rem;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:0.3rem;line-height:1.6;">{{ $countPP }}</span>
+                            @endif
                         </a>
                     </li>
                     <li>
+                        @php
+                            $countCollab = Auth::user()->publications()->where('type', 'projet_collaboratif')->count()
+                                + \App\Models\MembreProjet::where('utilisateur_id', Auth::id())->count();
+                        @endphp
                         <a href="{{ route('dashboard.collaborations') }}"
                            class="nav-tab {{ request()->routeIs('dashboard.collaborations') ? 'active' : '' }}">
                             <i class="fas fa-handshake"></i> Mes collaborations
+                            @if($countCollab > 0)
+                                <span style="background:var(--gray-200);color:var(--gray-600);font-size:0.68rem;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:0.3rem;line-height:1.6;">{{ $countCollab }}</span>
+                            @endif
                         </a>
                     </li>
                     <li>
@@ -679,6 +690,16 @@
             return icons[type] || { icon: 'fa-bell', bg: '#F3F4F6', color: '#6B7280' };
         }
 
+        function marquerNotifLue(id, event, el) {
+            event.preventDefault();
+            var lien = el.getAttribute('data-lien') || '#';
+            fetch(window.APP_URL + '/notifications/' + id, {
+                method: 'PUT',
+                headers: { 'X-CSRF-TOKEN': window.CSRF_TOKEN, 'Accept': 'application/json' }
+            }).catch(function() {});
+            if (lien && lien !== '#') window.location.href = lien;
+        }
+
         function loadNotifDropdown() {
             var list = document.getElementById('notifList');
             if (!list) return;
@@ -695,7 +716,7 @@
                 var html = '';
                 notifs.forEach(function(n) {
                     var ic = typeIcon(n.type);
-                    html += '<a href="' + (n.lien || '#') + '" style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.85rem 1.25rem;text-decoration:none;border-bottom:1px solid #F9FAFB;background:' + (n.est_lue ? 'white' : '#F5F3FF') + ';">'
+                    html += '<a href="' + (n.lien || '#') + '" onclick="marquerNotifLue(' + n.id + ', event, this)" data-lien="' + (n.lien || '#') + '" style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.85rem 1.25rem;text-decoration:none;border-bottom:1px solid #F9FAFB;background:' + (n.est_lue ? 'white' : '#F5F3FF') + ';">'
                         + '<div style="width:34px;height:34px;border-radius:50%;background:' + ic.bg + ';color:' + ic.color + ';display:flex;align-items:center;justify-content:center;font-size:0.82rem;flex-shrink:0;">'
                         + '<i class="fas ' + ic.icon + '"></i></div>'
                         + '<div style="flex:1;min-width:0;">'

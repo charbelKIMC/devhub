@@ -58,6 +58,10 @@
         /* SIDEBAR */
         .msg-sidebar { width:290px; background:var(--sb-bg); border-right:1px solid var(--sb-border); display:flex; flex-direction:column; flex-shrink:0; z-index:15; }
         .sb-head { padding:1.1rem 1.1rem 0.85rem; border-bottom:1px solid var(--sb-border); flex-shrink:0; }
+        .sb-home-link { display:none; align-items:center; gap:0.5rem; text-decoration:none; margin-bottom:0.85rem; }
+        .sb-home-link img { width:28px; height:28px; border-radius:8px; }
+        .sb-home-link span { font-family:'Urbanist',sans-serif; font-weight:800; font-size:1rem; color:var(--gray-900); }
+        @media (max-width:1024px) { .sb-home-link { display:flex; } }
         .sb-title { font-family:'Urbanist',sans-serif; font-size:1.05rem; font-weight:800; color:var(--gray-900); margin-bottom:0.75rem; }
         .sb-search { position:relative; }
         .sb-search input { width:100%; padding:0.5rem 0.75rem 0.5rem 2.1rem; background:var(--white); border:1.5px solid var(--gray-200); border-radius:10px; font-size:0.82rem; font-family:'DM Sans',sans-serif; color:var(--gray-700); outline:none; transition:border-color 0.2s; }
@@ -214,6 +218,10 @@
     <!-- SIDEBAR -->
     <div class="msg-sidebar" id="msgSidebar">
         <div class="sb-head">
+            <a href="{{ route('dashboard') }}" class="sb-home-link">
+                <img src="{{ asset('img/logo-devhub.png') }}" alt="DevHub">
+                <span>DevHub</span>
+            </a>
             <div class="sb-title">Chats</div>
             <div class="sb-search">
                 <i class="fas fa-search"></i>

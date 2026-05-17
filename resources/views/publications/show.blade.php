@@ -473,7 +473,7 @@
         <header class="pub-header">
 
             {{-- Retour --}}
-            <a href="javascript:history.back()" class="btn-back" onclick="if(history.length <= 1) window.location='{{ route('dashboard') }}'">
+            <a href="{{ route('dashboard') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i>
                 <span>Retour</span>
             </a>
