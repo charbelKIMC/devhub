@@ -29,7 +29,8 @@ class BrevoTransport extends AbstractTransport
 
         $to = [];
         foreach ($email->getTo() as $addr) {
-            $to[] = ['email' => $addr->getAddress(), 'name' => $addr->getName() ?: ''];
+            $addrEmail = $addr->getAddress();
+            $to[] = ['email' => $addrEmail, 'name' => $addr->getName() ?: $addrEmail];
         }
 
         $htmlBody = $email->getHtmlBody();
