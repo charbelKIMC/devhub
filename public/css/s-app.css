@@ -398,7 +398,7 @@ body {
     font-weight: 700;
 }
 
-.user-name { font-size: 0.75rem; font-weight: 500; color: var(--gray-900); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-name { font-size: 0.75rem; font-weight: 500; color: var(--gray-900); max-width: 6ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ─── DROPDOWN PANELS ─── */
 .dropdown-panel {

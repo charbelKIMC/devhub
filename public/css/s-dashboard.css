@@ -237,9 +237,10 @@
     .pub-btn-collab span { display: none; }
     .pub-btn-collab { flex-shrink: 0; padding: 0.4rem 0.6rem; }
 
-    /* Images : hauteur réduite sur mobile */
-    .pub-media-cover { max-height: 220px; object-fit: cover; }
-    .pub-media-grid { height: 160px; }
+    /* Images : contenu dans le card, pas de saignée */
+    .pub-media-single { margin: 0 0 0.85rem; }
+    .pub-media-cover { max-height: 220px; object-fit: cover; border-radius: 8px; }
+    .pub-media-grid { margin: 0 0 0.85rem; height: 160px; border-radius: 8px; }
     .pub-media-img { height: 160px; }
 }
 
