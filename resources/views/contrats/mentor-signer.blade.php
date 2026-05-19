@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mentor')
 @section('title', 'Contrat d\'engagement mentor – DevHub')
 
 @section('styles')
