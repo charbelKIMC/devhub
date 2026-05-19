@@ -277,6 +277,15 @@
             .collab-stats { grid-template-columns: repeat(2,1fr); }
             .participation-card { grid-template-columns: 1fr; }
             .part-actions { flex-direction: row; align-items: center; }
+            .main-tab { padding: 0.6rem 0.85rem; font-size: 0.82rem; gap: 0.35rem; }
+        }
+
+        @media (max-width: 576px) {
+            .main-tab { padding: 0.5rem 0.65rem; font-size: 0.78rem; gap: 0.3rem; }
+            .main-tab i { font-size: 0.78rem; }
+            .main-tab .tab-badge { min-width: 16px; height: 16px; font-size: 0.6rem; }
+            .main-tabs { width: 100%; }
+            .main-tab { flex: 1; justify-content: center; }
         }
     </style>
 @endsection

@@ -145,6 +145,20 @@
     .pp-empty i { font-size: 3rem; color: var(--gray-200); display: block; margin-bottom: 1rem; }
     .pp-empty-title { font-family: 'Urbanist',sans-serif; font-size: 1rem; font-weight: 700; color: var(--gray-600); margin-bottom: 0.5rem; }
     .pp-empty-sub { font-size: 0.85rem; color: var(--gray-400); margin-bottom: 1.5rem; }
+
+    .btn-creer-projet {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.65rem 1.5rem; background: var(--purple); color: white;
+        border-radius: 10px; font-size: 0.875rem; font-weight: 700;
+        text-decoration: none; white-space: nowrap; transition: background 0.2s;
+    }
+    .btn-creer-projet:hover { background: var(--purple-dark); color: white; }
+    .btn-creer-projet i { font-size: 0.8rem; }
+
+    @media (max-width: 576px) {
+        .btn-creer-projet { font-size: 0.82rem; padding: 0.55rem 1.1rem; gap: 0.35rem; }
+        .btn-creer-projet i { font-size: 0.72rem; }
+    }
 </style>
 @endsection
 
@@ -272,8 +286,7 @@
             <p class="pp-empty-sub">
                 Créez votre premier projet pour bénéficier d'un accompagnement mentor automatique.
             </p>
-            <a href="{{ route('projets-personnels.create') }}"
-               style="padding:0.65rem 1.5rem;background:var(--purple);color:white;border-radius:10px;font-size:0.875rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;">
+            <a href="{{ route('projets-personnels.create') }}" class="btn-creer-projet">
                 <i class="fas fa-plus"></i> Créer mon premier projet
             </a>
         </div>

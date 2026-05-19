@@ -169,12 +169,17 @@
             padding: 0.55rem 1.25rem; background: var(--purple); color: white;
             border-radius: 9px; font-size: 0.875rem; font-weight: 600;
             text-decoration: none; margin-top: 0.75rem; transition: background 0.2s;
+            white-space: nowrap;
         }
-        .btn-explorer i { font-size: 0.9rem; }
+        .btn-explorer i { font-size: 0.82rem; }
         .btn-explorer:hover { background: var(--purple-dark); color: white; }
 
         @media (max-width: 992px) { .fav-grid { grid-template-columns: repeat(2,1fr); } .fav-stats { grid-template-columns: repeat(2,1fr); } }
-        @media (max-width: 576px)  { .fav-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 576px)  {
+            .fav-grid { grid-template-columns: 1fr; }
+            .btn-explorer { font-size: 0.82rem; padding: 0.5rem 1rem; gap: 0.35rem; }
+            .btn-explorer i { font-size: 0.72rem; }
+        }
     </style>
 @endsection
 
