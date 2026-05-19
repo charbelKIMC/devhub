@@ -22,15 +22,6 @@
 
             <div class="nav-center" id="navCenter">
                 <div class="nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#">Explorer <i class="fas fa-chevron-down nav-arrow"></i></a>
-                    <div class="nav-dropdown-menu">
-                        <a href="{{ route('explorer') }}"><i class="fas fa-stream me-2"></i>Toutes les publications</a>
-                        <a href="{{ route('explorer') }}?type=article"><i class="fas fa-newspaper me-2"></i>Articles techniques</a>
-                        <a href="{{ route('explorer') }}?type=projet_collaboratif"><i class="fas fa-users me-2"></i>Projets collaboratifs</a>
-                        <a href="{{ route('explorer') }}?type=idee"><i class="fas fa-lightbulb me-2"></i>Idées et innovations</a>
-                    </div>
-                </div>
-                <div class="nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#">Communauté <i class="fas fa-chevron-down nav-arrow"></i></a>
                     <div class="nav-dropdown-menu">
                         <a href="{{ route('developpeurs') }}"><i class="fas fa-code me-2"></i>Développeurs</a>
@@ -60,12 +51,6 @@
 
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-inner">
-        <div class="mobile-section">
-            <div class="mobile-section-title">Explorer</div>
-            <a href="{{ route('explorer') }}" class="mobile-link"><i class="fas fa-stream me-2"></i>Toutes les publications</a>
-            <a href="{{ route('explorer') }}?type=article" class="mobile-link"><i class="fas fa-newspaper me-2"></i>Articles</a>
-            <a href="{{ route('explorer') }}?type=projet_collaboratif" class="mobile-link"><i class="fas fa-users me-2"></i>Projets collaboratifs</a>
-        </div>
         <div class="mobile-section">
             <div class="mobile-section-title">Communauté</div>
             <a href="{{ route('developpeurs') }}" class="mobile-link"><i class="fas fa-code me-2"></i>Développeurs</a>
@@ -99,9 +84,6 @@
                 <div class="hero-buttons">
                     <a href="{{ route('register') }}" class="btn-custom me-2">
                         <i class="fas fa-rocket me-2"></i>Rejoindre gratuitement
-                    </a>
-                    <a href="{{ route('explorer') }}" class="btn-outline-custom">
-                        <i class="fas fa-search me-2"></i>Explorer les projets
                     </a>
                 </div>
             </div>
@@ -348,9 +330,6 @@
             <a href="{{ route('register') }}" class="btn-custom me-2">
                 <i class="fas fa-user-plus me-2"></i>Créer un compte
             </a>
-            <a href="{{ route('explorer') }}" class="btn-outline-custom">
-                <i class="fas fa-search me-2"></i>Explorer sans compte
-            </a>
         </div>
     </div>
 </section>
@@ -372,7 +351,6 @@
                 <h4 class="footer-title">Navigation</h4>
                 <ul class="footer-links">
                     <li><a href="{{ route('home') }}">Accueil</a></li>
-                    <li><a href="{{ route('explorer') }}">Explorer</a></li>
                     <li><a href="{{ route('developpeurs') }}">Développeurs</a></li>
                     <li><a href="{{ route('mentor.externe') }}">Devenir mentor</a></li>
                 </ul>
