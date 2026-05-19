@@ -95,6 +95,15 @@
             min-width: 0;
         }
 
+        /* Nom auteur tronqué */
+        .header-author-name {
+            max-width: 120px; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+
+        /* Logo mobile (caché sur desktop) */
+        .header-logo-mobile { display: none; }
+
         /* Actions header droite */
         .header-actions { display:flex; gap:0.5rem; flex-shrink:0; align-items:center; }
 
@@ -460,9 +469,17 @@
 
         @media (max-width: 576px) {
             .pub-header { gap: 0.5rem; }
-            .header-author-spec { display: none; }
+            .header-author { display: none; }
+            .header-divider { display: none; }
             .btn-back span { display: none; }
             .btn-back { padding: 0.4rem 0.5rem; }
+            .header-logo-mobile {
+                display: flex; align-items: center; gap: 0.4rem;
+                font-family: 'Urbanist', sans-serif; font-size: 1rem;
+                font-weight: 800; color: var(--purple); flex: 1;
+                text-decoration: none;
+            }
+            .header-logo-mobile img { height: 22px; }
         }
     </style>
 </head>
@@ -476,6 +493,12 @@
             <a href="{{ route('dashboard') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i>
                 <span>Retour</span>
+            </a>
+
+            {{-- Logo mobile uniquement --}}
+            <a href="{{ route('dashboard') }}" class="header-logo-mobile">
+                <img src="{{ asset('img/logo-devhub.png') }}" alt="DevHub">
+                DevHub
             </a>
 
             {{-- Auteur --}}
