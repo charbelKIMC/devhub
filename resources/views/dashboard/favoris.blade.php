@@ -241,6 +241,20 @@
             </button>
         </div>
 
+        <!-- État vide (caché si des favoris existent, révélé par JS) -->
+        <div id="favEmptyState" style="{{ $favoris->count() > 0 ? 'display:none;' : '' }}padding:0;">
+            <div class="fav-empty">
+                <i class="fas fa-bookmark"></i>
+                <h3>Aucun favori pour le moment</h3>
+                <p style="font-size:0.85rem;color:var(--gray-400);">
+                    Sauvegardez des publications depuis le tableau de bord.
+                </p>
+                <a href="{{ route('dashboard') }}" class="btn-explorer">
+                    <i class="fas fa-search"></i> Explorer
+                </a>
+            </div>
+        </div>
+
         <!-- Grille -->
         <div class="fav-grid" id="favGrid">
 
@@ -322,16 +336,6 @@
                     </div>
                 @endif
             @empty
-                <div class="fav-empty">
-                    <i class="fas fa-bookmark"></i>
-                    <h3>Aucun favori pour le moment</h3>
-                    <p style="font-size:0.85rem;color:var(--gray-400);">
-                        Sauvegardez des publications depuis le tableau de bord.
-                    </p>
-                    <a href="{{ route('dashboard') }}" class="btn-explorer">
-                        <i class="fas fa-search"></i> Explorer
-                    </a>
-                </div>
             @endforelse
         </div>
 
@@ -379,16 +383,15 @@
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (!data.saved && card) {
-                        // Animation de disparition puis suppression
                         card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                         card.style.opacity = '0';
                         card.style.transform = 'scale(0.95)';
                         setTimeout(function() {
                             card.remove();
-                            // Vérifier si la grille est vide
                             var remaining = document.querySelectorAll('.fav-item').length;
                             if (remaining === 0) {
-                                window.location.reload();
+                                document.getElementById('favGrid').style.display = 'none';
+                                document.getElementById('favEmptyState').style.display = '';
                             }
                         }, 300);
                     }
