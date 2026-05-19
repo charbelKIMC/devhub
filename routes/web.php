@@ -25,6 +25,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MembreProjetController;
 use App\Http\Controllers\ProjetPersonnelController;
 use App\Http\Controllers\ContratNdaController;
+use App\Http\Controllers\ContratMentorController;
 
 // ─── Page d'accueil ───────────────────────────────────────────
 Route::get('/', function () {
@@ -56,6 +57,12 @@ Route::get('/verifier-email/{token}', [EmailVerificationController::class, 'veri
 // ─── Activation compte mentor (accessible sans session) ──────
 Route::get('/mentor/activation/{token}',  [MentorActivationController::class, 'showSetPassword'])->name('mentor.activation');
 Route::post('/mentor/activation/{token}', [MentorActivationController::class, 'activate'])->name('mentor.activation.store');
+
+// ─── Contrat mentor (auth uniquement, hors groupe is.mentor pour éviter boucle) ──
+Route::middleware('auth')->group(function () {
+    Route::get('/mentor/contrat',  [ContratMentorController::class, 'show'])->name('mentor.contrat.show');
+    Route::post('/mentor/contrat', [ContratMentorController::class, 'signer'])->name('mentor.contrat.signer');
+});
 
 // ─── Routes publiques (visiteurs) ────────────────────────────
 Route::get('/publications/{id}/lire', [PublicationController::class, 'showPublic'])->name('publications.public');

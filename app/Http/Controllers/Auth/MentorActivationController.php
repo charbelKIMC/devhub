@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -93,28 +94,23 @@ class MentorActivationController extends Controller
         // Supprimer le token
         DB::table('mentors_en_attente_activation')->where('token', $token)->delete();
 
+        // Créer le contrat mentor en attente de signature
+        \App\Models\ContratMentor::create([
+            'mentor_id' => $mentor->id,
+            'statut'    => 'en_attente',
+        ]);
+
         // Connexion automatique
         Auth::login($mentor);
         $request->session()->regenerate();
-
-        // Notification de bienvenue
-        $notif = Notification::create([
-            'destinataire_id' => $mentor->id,
-            'type'            => 'bienvenue',
-            'contenu'         => 'Bienvenue ' . $mentor->prenom . ' ! Votre compte mentor est actif. Accédez à votre espace.',
-            'lien'            => route('mentor.espace'),
-            'est_lue'         => false,
-            'date_creation'   => now(),
-        ]);
-        try { broadcast(new \App\Events\NotificationCreee($notif)); } catch (\Throwable) {}
 
         // Email de confirmation
         try {
             Mail::send('emails.mentor-compte-cree', ['mentor' => $mentor], function ($mail) use ($mentor) {
                 $mail->to($mentor->email)->subject('Votre compte mentor est activé – DevHub');
             });
-        } catch (\Throwable $e) { \Log::error('Mail mentor compte cree: ' . $e->getMessage()); }
+        } catch (\Throwable $e) { Log::error('Mail mentor compte cree: ' . $e->getMessage()); }
 
-        return redirect()->route('welcome.splash');
+        return redirect()->route('mentor.contrat.show');
     }
 }
