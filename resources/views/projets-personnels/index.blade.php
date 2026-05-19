@@ -147,17 +147,17 @@
     .pp-empty-sub { font-size: 0.85rem; color: var(--gray-400); margin-bottom: 1.5rem; }
 
     .btn-creer-projet {
-        display: inline-flex; align-items: center; gap: 0.4rem;
+        display: inline-flex; align-items: center; gap: 0.5rem;
         padding: 0.65rem 1.5rem; background: var(--purple); color: white;
         border-radius: 10px; font-size: 0.875rem; font-weight: 700;
-        text-decoration: none; white-space: nowrap; transition: background 0.2s;
+        text-decoration: none; white-space: nowrap; line-height: 1;
+        transition: background 0.2s;
     }
     .btn-creer-projet:hover { background: var(--purple-dark); color: white; }
-    .btn-creer-projet i { font-size: 0.8rem; }
+    .btn-creer-projet i { line-height: 1; vertical-align: middle; }
 
-    @media (max-width: 576px) {
-        .btn-creer-projet { font-size: 0.82rem; padding: 0.55rem 1.1rem; gap: 0.35rem; }
-        .btn-creer-projet i { font-size: 0.72rem; }
+    @media (max-width: 420px) {
+        .btn-creer-projet { font-size: 0.82rem; padding: 0.6rem 1.1rem; }
     }
 </style>
 @endsection
