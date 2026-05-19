@@ -2,6 +2,15 @@
 @section('title', 'Détail candidature – Admin DevHub')
 @section('page_title', 'Détail de la candidature')
 
+@section('styles')
+<style>
+    .cand-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) {
+        .cand-detail-grid { grid-template-columns: 1fr; }
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div style="max-width:780px;">
@@ -24,7 +33,7 @@
         <div style="font-family:'Urbanist',sans-serif;font-size:0.82rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;">
             <i class="fas fa-user me-2" style="color:var(--purple);"></i>Informations personnelles
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="cand-detail-grid">
             <div>
                 <div style="font-size:0.72rem;color:var(--gray-400);margin-bottom:0.2rem;">Nom complet</div>
                 <div style="font-weight:700;color:var(--gray-900);">{{ $candidature->prenom }} {{ $candidature->nom }}</div>
@@ -57,7 +66,7 @@
         <div style="font-family:'Urbanist',sans-serif;font-size:0.82rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;">
             <i class="fas fa-code me-2" style="color:var(--purple);"></i>Expertise professionnelle
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div class="cand-detail-grid" style="margin-bottom:1rem;">
             <div>
                 <div style="font-size:0.72rem;color:var(--gray-400);margin-bottom:0.2rem;">Spécialité</div>
                 <div style="font-weight:600;color:var(--gray-700);">{{ $candidature->specialite }}</div>

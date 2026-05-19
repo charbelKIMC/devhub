@@ -9,10 +9,13 @@
         font-weight: 800; color: var(--gray-900); margin-bottom: 1.5rem;
         display: flex; align-items: center; gap: 0.5rem;
     }
+    .nda-scroll-wrap {
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
+        border-radius: 14px; border: 1.5px solid var(--gray-200);
+    }
     .nda-table {
         width: 100%; border-collapse: collapse;
-        background: white; border-radius: 14px; overflow: hidden;
-        border: 1.5px solid var(--gray-200);
+        background: white; min-width: 680px;
     }
     .nda-table th {
         background: var(--gray-50); font-size: 0.72rem; font-weight: 700;
@@ -62,6 +65,7 @@
             <div style="font-family:'Urbanist',sans-serif;font-weight:700;color:var(--gray-500);">Aucun contrat NDA pour le moment</div>
         </div>
     @else
+        <div class="nda-scroll-wrap">
         <table class="nda-table">
             <thead>
                 <tr>
@@ -116,6 +120,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
 
         <div style="margin-top:1rem;">
             {{ $contrats->links() }}
