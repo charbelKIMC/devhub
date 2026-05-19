@@ -19,7 +19,7 @@ class CollabContratSigneAuteur extends Mailable
         public Utilisateur $auteur,
         public Utilisateur $candidat,
         public Publication $pub,
-        public string $cheminPdf
+        public string $pdfContenu
     ) {}
 
     public function envelope(): Envelope
@@ -34,9 +34,9 @@ class CollabContratSigneAuteur extends Mailable
 
     public function attachments(): array
     {
+        $nom = \Illuminate\Support\Str::slug($this->candidat->prenom . '-' . $this->candidat->nom);
         return [
-            Attachment::fromStorageDisk('public', $this->cheminPdf)
-                ->as('contrat-confidentialite-' . \Illuminate\Support\Str::slug($this->candidat->prenom . '-' . $this->candidat->nom) . '.pdf')
+            Attachment::fromData(fn() => $this->pdfContenu, 'contrat-confidentialite-' . $nom . '.pdf')
                 ->withMime('application/pdf'),
         ];
     }

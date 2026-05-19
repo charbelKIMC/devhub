@@ -18,7 +18,7 @@ class CollabContratSigneCandidat extends Mailable
     public function __construct(
         public Utilisateur $candidat,
         public Publication $pub,
-        public string $cheminPdf
+        public string $pdfContenu
     ) {}
 
     public function envelope(): Envelope
@@ -34,8 +34,7 @@ class CollabContratSigneCandidat extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromStorageDisk('public', $this->cheminPdf)
-                ->as('contrat-confidentialite.pdf')
+            Attachment::fromData(fn() => $this->pdfContenu, 'contrat-confidentialite.pdf')
                 ->withMime('application/pdf'),
         ];
     }

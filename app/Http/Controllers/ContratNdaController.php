@@ -65,9 +65,10 @@ class ContratNdaController extends Controller
             'ipSignature'   => $request->ip(),
         ])->setPaper('a4', 'portrait');
 
-        $filename = 'nda_' . $contrat->id . '_' . $now->format('Ymd_His') . '.pdf';
-        $chemin   = 'ndas/' . $filename;
-        Storage::disk('public')->put($chemin, $pdf->output());
+        $pdfContenu = $pdf->output(); // contenu binaire conservé pour les mails
+        $filename   = 'nda_' . $contrat->id . '_' . $now->format('Ymd_His') . '.pdf';
+        $chemin     = 'ndas/' . $filename;
+        Storage::disk('public')->put($chemin, $pdfContenu);
 
         // Mettre à jour le contrat
         $contrat->update([
@@ -121,15 +122,15 @@ class ContratNdaController extends Controller
         ]);
         try { broadcast(new \App\Events\NotificationCreee($notifAuteur)); } catch (\Throwable) {}
 
-        // Emails avec PDF en pièce jointe
+        // Emails avec PDF en pièce jointe (contenu binaire direct)
         try {
             \Illuminate\Support\Facades\Mail::to($candidat->email)
-                ->send(new \App\Mail\CollabContratSigneCandidat($candidat, $pub, $chemin));
+                ->send(new \App\Mail\CollabContratSigneCandidat($candidat, $pub, $pdfContenu));
         } catch (\Throwable $e) { \Log::error('Mail contrat signe candidat: ' . $e->getMessage()); }
 
         try {
             \Illuminate\Support\Facades\Mail::to($auteur->email)
-                ->send(new \App\Mail\CollabContratSigneAuteur($auteur, $candidat, $pub, $chemin));
+                ->send(new \App\Mail\CollabContratSigneAuteur($auteur, $candidat, $pub, $pdfContenu));
         } catch (\Throwable $e) { \Log::error('Mail contrat signe auteur: ' . $e->getMessage()); }
 
         // Premier membre → mentor attribué immédiatement
