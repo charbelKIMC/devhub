@@ -231,6 +231,16 @@
     .stats-indicators { grid-template-columns: 1fr; }
     .publication-footer { gap:0.4rem; }
     .table-custom th, .table-custom td { padding:0.5rem; }
+
+    /* Publication header mobile : évite que le bouton Collaborer soit coupé */
+    .publication-header { flex-wrap: wrap; gap: 0.5rem; }
+    .pub-btn-collab span { display: none; }
+    .pub-btn-collab { flex-shrink: 0; padding: 0.4rem 0.6rem; }
+
+    /* Images : hauteur réduite sur mobile */
+    .pub-media-cover { max-height: 220px; object-fit: cover; }
+    .pub-media-grid { height: 160px; }
+    .pub-media-img { height: 160px; }
 }
 
 /**/
