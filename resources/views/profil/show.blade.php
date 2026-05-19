@@ -20,6 +20,8 @@
     .profil-top-wrap {
         background: white;
         border-bottom: 1px solid var(--gray-200);
+        position: relative;
+        z-index: 1;
     }
 
     .profil-top-inner {
