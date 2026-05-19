@@ -207,11 +207,17 @@ class ProfilController extends Controller
     public function liste()
     {
         $developpeurs = Utilisateur::where('statut', 'actif')
-            ->whereIn('role', ['développeur', 'mentor'])
+            ->where('role', 'développeur')
+            ->with('competences')
             ->latest('date_inscription')
             ->paginate(12);
 
-        return view('developpeurs', compact('developpeurs'));
+        $mentors = Utilisateur::where('statut', 'actif')
+            ->where('role', 'mentor')
+            ->latest('date_inscription')
+            ->get();
+
+        return view('developpeurs', compact('developpeurs', 'mentors'));
     }
 
     public function profilPublic($id)
