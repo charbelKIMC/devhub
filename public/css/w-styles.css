@@ -1411,3 +1411,44 @@ body {
     .header-buttons { display: none; }
     .nav-center { display: none; }
 }
+/* ══════════════════════════════════════════════
+   ANIMATIONS GLOBALES
+══════════════════════════════════════════════ */
+@keyframes devhubFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes devhubFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Hero page d'accueil — chargement */
+.hero-title    { animation: devhubFadeUp .7s cubic-bezier(.22,.61,.36,1) both; }
+.hero-subtitle { animation: devhubFadeUp .7s .18s cubic-bezier(.22,.61,.36,1) both; }
+.hero-buttons  { animation: devhubFadeUp .7s .34s cubic-bezier(.22,.61,.36,1) both; }
+
+/* Hero pages statiques — chargement */
+.page-hero       { animation: devhubFadeUp .6s cubic-bezier(.22,.61,.36,1) both; }
+.page-hero-badge { animation: devhubFadeUp .5s .1s cubic-bezier(.22,.61,.36,1) both; }
+.page-hero-title { animation: devhubFadeUp .6s .18s cubic-bezier(.22,.61,.36,1) both; }
+.page-hero-sub   { animation: devhubFadeUp .6s .28s cubic-bezier(.22,.61,.36,1) both; }
+
+/* Profil public — chargement */
+.profile-cover     { animation: devhubFadeIn .5s ease both; }
+.profile-main-zone { animation: devhubFadeUp .6s .15s cubic-bezier(.22,.61,.36,1) both; }
+
+/* Base scroll — éléments cachés avant observation */
+.scroll-anim {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity .55s cubic-bezier(.22,.61,.36,1),
+                transform .55s cubic-bezier(.22,.61,.36,1);
+}
+.scroll-anim.in-view { opacity: 1; transform: none; }
+.scroll-anim.delay-1 { transition-delay: .07s; }
+.scroll-anim.delay-2 { transition-delay: .14s; }
+.scroll-anim.delay-3 { transition-delay: .21s; }
+.scroll-anim.delay-4 { transition-delay: .28s; }
+.scroll-anim.delay-5 { transition-delay: .35s; }
+.scroll-anim.delay-6 { transition-delay: .42s; }

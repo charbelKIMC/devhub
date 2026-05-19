@@ -385,3 +385,11 @@ textarea.field-input { resize: vertical; min-height: 110px; }
     .header-auth { display: none; }
     .mentor-hero-title { font-size: 1.6rem; }
 }
+/* ── Animation page candidature mentor ── */
+@keyframes formSlideUp {
+    from { opacity: 0; transform: translateY(36px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.mentor-hero   { animation: formSlideUp .65s cubic-bezier(.22,.61,.36,1) both; }
+.candidat-form { animation: formSlideUp .65s .15s cubic-bezier(.22,.61,.36,1) both; }
+.conditions-box { animation: formSlideUp .65s .1s cubic-bezier(.22,.61,.36,1) both; }

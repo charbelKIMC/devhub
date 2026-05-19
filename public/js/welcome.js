@@ -129,23 +129,35 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => { if (window.resizeTimer) clearTimeout(window.resizeTimer); window.resizeTimer = setTimeout(() => new StackCarousel(), 200); });
 
     // ─── ANIMATIONS SCROLL ───────────────────────────────────
-    const animateObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, i) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }, i * 80);
-                animateObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+    if (window.IntersectionObserver) {
+        const SCROLL_SELECTORS = [
+            '.pub-recente-card',
+            '.dev-card',
+            '.mentor-condition-item',
+            '.problem-item',
+            '.stat-item',
+            '.page-section',
+            '.sidebar-widget',
+            '.profile-pub-sidebar > div',
+            '.contact-form-card',
+            '.contact-info-card',
+        ].join(',');
 
-    document.querySelectorAll('.pub-recente-card, .dev-card, .mentor-condition-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
-        animateObserver.observe(el);
-    });
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll(SCROLL_SELECTORS).forEach((el, i) => {
+            el.classList.add('scroll-anim');
+            const d = (i % 6) + 1;
+            if (d > 1) el.classList.add('delay-' + (d - 1));
+            scrollObserver.observe(el);
+        });
+    }
 
 });
