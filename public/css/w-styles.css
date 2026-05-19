@@ -1264,6 +1264,8 @@ body {
     .section-title          { font-size: 1.55rem; text-align: center;}
     .section-subtitle       { text-align: center; }
     .talents-description    { text-align: center;}
+    .stat-number            { font-size: 1.75rem; }
+    .stat-label             { font-size: 0.82rem; }
     .mentor-conditions      { grid-template-columns: 1fr 1fr; }
     .problem-right          { border-top-left-radius: 20%; padding: 3rem 1.5rem; }
     .solution-icon          { width: 64px; height: 64px; }
@@ -1282,8 +1284,8 @@ body {
 
 /* Très petit (400px) */
 @media (max-width: 400px) {
-    .stat-number { font-size: 3rem; }
-    .stat-label { font-size: 0.9rem; }
+    .stat-number { font-size: 1.45rem; }
+    .stat-label  { font-size: 0.75rem; }
     .mentor-conditions      { grid-template-columns: 1fr; }
 }
 /* ── Responsivité mobile : défilement horizontal pour .devs-section ── */
