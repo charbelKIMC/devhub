@@ -184,6 +184,9 @@ Route::middleware(['auth', 'is.admin'])->prefix('admin')->name('admin.')->group(
 });
 
 Route::middleware(['auth', 'is.mentor'])->prefix('mentor')->name('mentor.')->group(function () {
-    Route::get('/espace', [MentoratController::class, 'espaceMentor'])->name('espace');
+    Route::get('/espace',        [MentoratController::class, 'espaceMentor'])->name('espace');
+    Route::get('/profil',        [MentoratController::class, 'profil'])->name('profil');
+    Route::put('/profil',        [MentoratController::class, 'mettreAJourProfil'])->name('profil.update');
+    Route::post('/profil/mdp',   [MentoratController::class, 'mettreAJourMdp'])->name('profil.mdp');
 });
 

@@ -235,8 +235,8 @@
 
             <div class="mentor-nav-section">Compte</div>
 
-            <a href="{{ route('profil.show', Auth::id()) }}"
-               class="mentor-nav-item">
+            <a href="{{ route('mentor.profil') }}"
+               class="mentor-nav-item {{ request()->routeIs('mentor.profil') ? 'active' : '' }}">
                 <i class="fas fa-user"></i> Mon profil
             </a>
         </nav>
@@ -244,8 +244,7 @@
         <div class="mentor-sidebar-footer">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="button" class="btn-mentor-logout" onclick="confirmerDeconnexion()" 
-                        style="...garder le style existant...">
+                <button type="button" class="btn-mentor-logout" onclick="confirmerDeconnexion()">
                     <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </button>
             </form>

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Competence;
 use App\Models\RelationMentorat;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class MentoratController extends Controller
@@ -69,6 +72,102 @@ class MentoratController extends Controller
         }
 
         return back()->with('success', 'Votre demande a été transmise à l\'administrateur. Vous serez notifié dès qu\'un mentor vous sera attribué.');
+    }
+
+    // ─── Profil mentor ───
+    public function profil()
+    {
+        $user          = Auth::user()->load('competences');
+        $mentores      = RelationMentorat::with('mentore')
+                            ->where('mentor_id', $user->id)
+                            ->where('statut', 'active')
+                            ->get();
+        $totalMentores = RelationMentorat::where('mentor_id', $user->id)->count();
+        $competences   = Competence::all()->groupBy('categorie');
+
+        return view('mentorat.profil', compact('user', 'mentores', 'totalMentores', 'competences'));
+    }
+
+    public function mettreAJourProfil(Request $request)
+    {
+        $request->validate([
+            'prenom'     => 'required|string|max:60',
+            'nom'        => 'required|string|max:60',
+            'specialite' => 'nullable|string|max:100',
+            'bio'        => 'nullable|string|max:1000',
+            'localisation' => 'nullable|string|max:100',
+            'github'     => 'nullable|url|max:255',
+            'linkedin'   => 'nullable|url|max:255',
+            'portfolio'  => 'nullable|url|max:255',
+            'photo'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = Auth::user();
+        $data = $request->only(['prenom', 'nom', 'specialite', 'bio', 'localisation', 'github', 'linkedin', 'portfolio']);
+
+        if ($request->hasFile('photo')) {
+            if ($user->photo) $this->supprimerPhoto($user->photo);
+            $data['photo'] = $this->uploadPhoto($request->file('photo'));
+        }
+
+        $user->update($data);
+
+        if ($request->has('competences')) {
+            $sync = collect($request->competences)
+                ->mapWithKeys(fn($id) => [$id => ['niveau_maitrise' => 'débutant']])
+                ->toArray();
+            $user->competences()->sync($sync);
+        } else {
+            $user->competences()->detach();
+        }
+
+        return redirect()->route('mentor.profil')->with('success', 'Profil mis à jour avec succès.');
+    }
+
+    public function mettreAJourMdp(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'mot_de_passe'     => 'required|string|min:8|same:mot_de_passe_confirmation',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->mot_de_passe)) {
+            return back()->withErrors(['current_password' => 'Mot de passe actuel incorrect.']);
+        }
+
+        $user->update(['mot_de_passe' => Hash::make($request->mot_de_passe)]);
+
+        return redirect()->route('mentor.profil')->with('success', 'Mot de passe mis à jour avec succès.');
+    }
+
+    private function uploadPhoto($file): string
+    {
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        $preset    = env('CLOUDINARY_UPLOAD_PRESET');
+
+        if ($cloudName && $preset) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::attach(
+                    'file', file_get_contents($file->getRealPath()), $file->getClientOriginalName()
+                )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                    'upload_preset' => $preset,
+                ]);
+                if ($response->successful() && $response->json('secure_url')) {
+                    return $response->json('secure_url');
+                }
+            } catch (\Throwable $e) { \Log::error('Cloudinary upload: ' . $e->getMessage()); }
+        }
+
+        return $file->store('photos', 'public');
+    }
+
+    private function supprimerPhoto(string $photo): void
+    {
+        if (!str_starts_with($photo, 'http')) {
+            Storage::disk('public')->delete($photo);
+        }
     }
 
     // ─── Espace mentor ───
