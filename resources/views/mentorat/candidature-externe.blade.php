@@ -275,7 +275,7 @@ setupUpload('fileIdentite', 'nameIdentite', 'zoneIdentite');
     const hint        = document.getElementById('hintNumero');
 
     const configs = {
-        passeport : { pattern: '[A-Za-z0-9]{6,9}', maxlength: '9',  placeholder: 'Ex: AB1234567',       hint: 'Lettres et chiffres – 6 à 9 caractères',  inputmode: 'text' },
+        passeport : { pattern: '[0-9]{2}[A-Za-z]{2}[0-9]{5}', maxlength: '9',  placeholder: 'Ex: 12AB56789',  hint: '2 chiffres + 2 lettres + 5 chiffres (ex: 12AB56789)', inputmode: 'text' },
         cni       : { pattern: '[0-9]{1,10}',       maxlength: '10', placeholder: 'Ex: 0123456789',      hint: 'Chiffres uniquement – max 10 caractères', inputmode: 'numeric' },
         cip       : { pattern: '[0-9]{1,10}',       maxlength: '10', placeholder: 'Ex: 0123456789',      hint: 'Chiffres uniquement – max 10 caractères', inputmode: 'numeric' },
         autre     : { pattern: '[A-Za-z0-9]{1,10}', maxlength: '10', placeholder: 'Numéro du document',  hint: 'Lettres ou chiffres – max 10 caractères', inputmode: 'text' },

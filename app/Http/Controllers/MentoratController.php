@@ -220,8 +220,8 @@ class MentoratController extends Controller
             'type_identite'     => ['required','string','in:'.implode(',', $typesIdentite)],
             'numero_identite'   => ['required','string', function ($attribute, $value, $fail) use ($request) {
                 if ($request->input('type_identite') === 'passeport') {
-                    if (!preg_match('/^[A-Z0-9]{6,9}$/i', $value)) {
-                        $fail('Le numéro de passeport doit contenir 6 à 9 caractères alphanumériques (lettres et chiffres).');
+                    if (!preg_match('/^[0-9]{2}[A-Z]{2}[0-9]{5}$/i', $value)) {
+                        $fail('Le numéro de passeport doit respecter le format : 2 chiffres + 2 lettres + 5 chiffres (ex: 12AB56789).');
                     }
                 } else {
                     if (!preg_match('/^[0-9]{1,10}$/', $value)) {
