@@ -498,7 +498,6 @@
             {{-- Logo mobile uniquement --}}
             <a href="{{ route('dashboard') }}" class="header-logo-mobile">
                 <img src="{{ asset('img/logo-devhub.png') }}" alt="DevHub">
-                DevHub
             </a>
 
             {{-- Auteur --}}
