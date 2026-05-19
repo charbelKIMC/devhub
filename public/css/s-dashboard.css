@@ -223,6 +223,13 @@
     .page-header { flex-direction:column; align-items:flex-start; }
     .stats-indicators { grid-template-columns: repeat(2,1fr); }
     .publications-table { font-size:0.82rem; }
+
+    /* Images : supprimer le débordement sur mobile */
+    .pub-media-single { margin: 0 0 0.85rem; }
+    .pub-media-cover { max-height: 220px; max-width: 100%; object-fit: cover; border-radius: 8px; }
+    .pub-media-grid { margin: 0 0 0.85rem; height: 160px; border-radius: 8px; overflow: hidden; }
+    .pub-media-img { height: 160px; }
+    .publication-card { overflow: hidden; }
 }
 
 @media (max-width: 576px) {
