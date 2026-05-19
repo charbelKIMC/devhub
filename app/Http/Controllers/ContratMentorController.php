@@ -56,17 +56,24 @@ class ContratMentorController extends Controller
 
         $now = now();
 
-        $pdf = Pdf::loadView('contrats.mentor-pdf', [
-            'mentor'        => $mentor,
-            'contrat'       => $contrat,
-            'dateSignature' => $now,
-            'ipSignature'   => $request->ip(),
-        ])->setPaper('a4', 'portrait');
+        // Génération PDF (non bloquante)
+        $pdfContenu = null;
+        $chemin     = null;
+        try {
+            $pdf = Pdf::loadView('contrats.mentor-pdf', [
+                'mentor'        => $mentor,
+                'contrat'       => $contrat,
+                'dateSignature' => $now,
+                'ipSignature'   => $request->ip(),
+            ])->setPaper('a4', 'portrait');
 
-        $pdfContenu = $pdf->output();
-        $filename   = 'contrat_mentor_' . $mentor->id . '_' . $now->format('Ymd_His') . '.pdf';
-        $chemin     = 'contrats_mentor/' . $filename;
-        Storage::disk('public')->put($chemin, $pdfContenu);
+            $pdfContenu = $pdf->output();
+            $filename   = 'contrat_mentor_' . $mentor->id . '_' . $now->format('Ymd_His') . '.pdf';
+            $chemin     = 'contrats_mentor/' . $filename;
+            Storage::disk('public')->put($chemin, $pdfContenu);
+        } catch (\Throwable $e) {
+            Log::error('PDF contrat mentor: ' . $e->getMessage());
+        }
 
         $contrat->update([
             'statut'       => 'signé',
@@ -77,7 +84,9 @@ class ContratMentorController extends Controller
 
         // Email au mentor avec PDF
         try {
-            Mail::to($mentor->email)->send(new MentorContratSigne($mentor, $pdfContenu));
+            if ($pdfContenu) {
+                Mail::to($mentor->email)->send(new MentorContratSigne($mentor, $pdfContenu));
+            }
         } catch (\Throwable $e) {
             Log::error('Mail contrat mentor signe mentor: ' . $e->getMessage());
         }
@@ -86,7 +95,9 @@ class ContratMentorController extends Controller
         $admin = Utilisateur::where('role', 'admin')->first();
         if ($admin) {
             try {
-                Mail::to($admin->email)->send(new AdminMentorContratSigne($mentor, $pdfContenu));
+                if ($pdfContenu) {
+                    Mail::to($admin->email)->send(new AdminMentorContratSigne($mentor, $pdfContenu));
+                }
             } catch (\Throwable $e) {
                 Log::error('Mail contrat mentor signe admin: ' . $e->getMessage());
             }
