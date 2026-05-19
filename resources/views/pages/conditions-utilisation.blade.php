@@ -133,7 +133,7 @@
         <p>
             Les présentes CGU sont soumises au droit de la République du Bénin.
             Tout litige découlant de l'utilisation de DevHub sera soumis à la compétence exclusive
-            des tribunaux compétents de Cotonou, Bénin.
+            des tribunaux compétents de Parakou, Bénin.
         </p>
         <p style="color:#999;font-size:0.82rem;">Dernière mise à jour : mai 2026</p>
     </div>

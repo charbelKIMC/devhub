@@ -33,7 +33,7 @@
                 <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
                 <div>
                     <div style="font-weight:700;color:#111;margin-bottom:0.2rem;">Email</div>
-                    <div style="color:#666;font-size:0.9rem;">contact@devhub.bj</div>
+                    <div style="color:#666;font-size:0.9rem;">229devhub@gmail.com</div>
                     <div style="color:#999;font-size:0.78rem;margin-top:0.1rem;">Réponse sous 24–48 h</div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div>
                     <div style="font-weight:700;color:#111;margin-bottom:0.2rem;">Localisation</div>
-                    <div style="color:#666;font-size:0.9rem;">Cotonou, Bénin</div>
+                    <div style="color:#666;font-size:0.9rem;">Parakou, Bénin</div>
                 </div>
             </div>
 

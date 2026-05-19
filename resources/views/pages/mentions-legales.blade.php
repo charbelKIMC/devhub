@@ -21,8 +21,8 @@
         </p>
         <p>
             <strong>Responsable de publication :</strong> Équipe DevHub<br>
-            <strong>Email de contact :</strong> contact@devhub.bj<br>
-            <strong>Siège social :</strong> Cotonou, Bénin
+            <strong>Email de contact :</strong> 229devhub@gmail.com<br>
+            <strong>Siège social :</strong> Parakou, Bénin
         </p>
     </div>
 
@@ -87,7 +87,7 @@
         <p>
             Les présentes mentions légales sont soumises au droit béninois. Tout litige relatif à
             l'utilisation du site DevHub sera soumis à la compétence exclusive des tribunaux compétents
-            de Cotonou, Bénin.
+            de Parakou, Bénin.
         </p>
         <p style="color:#999;font-size:0.82rem;">Dernière mise à jour : mai 2026</p>
     </div>

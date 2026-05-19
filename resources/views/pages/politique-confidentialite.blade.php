@@ -17,7 +17,7 @@
         <div class="page-section-title">1. Responsable du traitement</div>
         <p>
             Le responsable du traitement des données personnelles collectées sur DevHub est l'équipe DevHub,
-            joignable à l'adresse : <strong>contact@devhub.bj</strong>
+            joignable à l'adresse : <strong>229devhub@gmail.com</strong>
         </p>
     </div>
 
@@ -89,7 +89,7 @@
             <li><strong>Droit d'opposition</strong> : vous opposer à certains traitements</li>
         </ul>
         <p>
-            Pour exercer ces droits, contactez-nous à <strong>contact@devhub.bj</strong> en précisant
+            Pour exercer ces droits, contactez-nous à <strong>229devhub@gmail.com</strong> en précisant
             votre demande. Nous nous engageons à y répondre dans un délai de <strong>30 jours</strong>.
         </p>
     </div>
@@ -121,7 +121,7 @@
         <p>
             Pour toute question relative à cette politique ou à l'exercice de vos droits :
             <a href="{{ route('contact') }}" style="color:var(--purple);font-weight:600;">Formulaire de contact</a>
-            ou par email à <strong>contact@devhub.bj</strong>
+            ou par email à <strong>229devhub@gmail.com</strong>
         </p>
         <p style="color:#999;font-size:0.82rem;">Dernière mise à jour : mai 2026</p>
     </div>
