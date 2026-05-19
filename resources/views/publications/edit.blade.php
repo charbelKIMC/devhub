@@ -81,6 +81,8 @@
 
         .header-sep { width:1px; height:26px; background:var(--gray-200); flex-shrink:0; }
 
+        .header-logo-mobile { display: none; }
+
         .header-right { display:flex; gap:0.5rem; flex-shrink:0; }
 
         .btn-save {
@@ -280,13 +282,23 @@
         }
 
         @media (max-width: 768px) {
-            .edit-header { padding: 0 1rem; gap: 0.65rem; }
+            .edit-header { padding: 0 1rem; gap: 0.5rem; }
             .header-title, .header-sep { display: none; }
+            .header-logo-mobile {
+                display: flex; align-items: center;
+                flex: 1; text-decoration: none;
+            }
+            .header-logo-mobile img { height: 26px; }
+            .btn-label { display: none; }
+            .btn-save { padding: 0.4rem 0.5rem; }
+            .btn-cancel { padding: 0.4rem 0.5rem; }
         }
 
         @media (max-width: 576px) {
+            .edit-header { padding: 0 0.75rem; gap: 0.4rem; }
             .btn-back span { display: none; }
             .btn-back { padding: 0.4rem 0.5rem; }
+            .header-right { gap: 0.3rem; }
             .statut-row { flex-direction: column; }
         }
     </style>
@@ -319,12 +331,17 @@
 
         <div class="header-title">Modifier — {{ $publication->titre }}</div>
 
+        {{-- Logo mobile (spacer centré) --}}
+        <a href="{{ route('dashboard') }}" class="header-logo-mobile">
+            <img src="{{ asset('img/logo-devhub.png') }}" alt="DevHub">
+        </a>
+
         <div class="header-right">
             <a href="{{ route('publications.show', $publication->id) }}" class="btn-cancel">
-                Annuler
+                <i class="fas fa-times"></i><span class="btn-label"> Annuler</span>
             </a>
             <button type="submit" form="editForm" class="btn-save">
-                <i class="fas fa-save"></i> Enregistrer
+                <i class="fas fa-save"></i><span class="btn-label"> Enregistrer</span>
             </button>
         </div>
     </header>
