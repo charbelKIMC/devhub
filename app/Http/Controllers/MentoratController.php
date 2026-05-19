@@ -201,7 +201,7 @@ class MentoratController extends Controller
             'Cybersécurité','Intelligence Artificielle','Architecte logiciel','Autre',
         ];
         $anneesAutorisees = ['1-3 ans','3-5 ans','5-10 ans','10+ ans'];
-        $typesIdentite    = ['cni','passeport','permis','autre'];
+        $typesIdentite    = ['cni','passeport','cip','autre'];
 
         $request->validate([
             'prenom'            => ['required','string','max:50','regex:/^[\pL\s\-\']+$/u'],
@@ -218,7 +218,17 @@ class MentoratController extends Controller
             'motivation'        => ['required','string','min:100','max:1500'],
             'references'        => ['required','string','min:20','max:1000'],
             'type_identite'     => ['required','string','in:'.implode(',', $typesIdentite)],
-            'numero_identite'   => ['required','string','max:50','regex:/^[A-Za-z0-9\-\s]+$/'],
+            'numero_identite'   => ['required','string', function ($attribute, $value, $fail) use ($request) {
+                if ($request->input('type_identite') === 'passeport') {
+                    if (!preg_match('/^[A-Z0-9]{6,9}$/i', $value)) {
+                        $fail('Le numéro de passeport doit contenir 6 à 9 caractères alphanumériques (lettres et chiffres).');
+                    }
+                } else {
+                    if (!preg_match('/^[0-9]{1,10}$/', $value)) {
+                        $fail('Le numéro de pièce doit contenir uniquement des chiffres (max 10).');
+                    }
+                }
+            }],
             'cv'                => ['required','file','mimes:pdf,doc,docx','max:5120'],
             'piece_identite'    => ['required','file','mimes:pdf,jpg,jpeg,png','max:5120'],
         ], [
@@ -233,7 +243,6 @@ class MentoratController extends Controller
             'linkedin.regex'          => 'Le lien doit pointer vers linkedin.com.',
             'motivation.min'          => 'La motivation doit contenir au moins 100 caractères.',
             'references.min'          => 'Veuillez fournir au moins une référence avec un contact.',
-            'numero_identite.regex'   => 'Le numéro de pièce ne doit contenir que des lettres et chiffres.',
             'cv.mimes'                => 'Le CV doit être au format PDF, DOC ou DOCX.',
             'piece_identite.mimes'    => 'La pièce d\'identité doit être au format PDF, JPG ou PNG.',
         ]);

@@ -103,19 +103,20 @@
 
                 <div class="field-group">
                     <label>Type de pièce <span class="required-star">*</span></label>
-                    <select name="type_identite" class="field-input" required>
+                    <select name="type_identite" id="typeIdentite" class="field-input" required>
                         <option value="">Sélectionnez le type</option>
-                        <option value="cni">Carte nationale d'identité</option>
-                        <option value="passeport">Passeport</option>
-                        <option value="permis">Permis de conduire</option>
-                        <option value="autre">Autre document officiel</option>
+                        <option value="cni"      {{ old('type_identite') === 'cni'       ? 'selected' : '' }}>Carte nationale d'identité</option>
+                        <option value="passeport"{{ old('type_identite') === 'passeport' ? 'selected' : '' }}>Passeport</option>
+                        <option value="cip"      {{ old('type_identite') === 'cip'       ? 'selected' : '' }}>Certificat d'identification personnel</option>
+                        <option value="autre"    {{ old('type_identite') === 'autre'     ? 'selected' : '' }}>Autre document officiel</option>
                     </select>
                 </div>
 
                 <div class="field-group">
                     <label>Numéro de la pièce <span class="required-star">*</span></label>
-                    <input type="text" name="numero_identite" class="field-input"
-                           value="{{ old('numero_identite') }}" placeholder="Numéro de votre document" required>
+                    <input type="text" name="numero_identite" id="numeroIdentite" class="field-input"
+                           value="{{ old('numero_identite') }}" placeholder="Sélectionnez d'abord le type de pièce" required>
+                    <small id="hintNumero" style="color:#6B7280;font-size:0.78rem;margin-top:0.25rem;display:block;"></small>
                 </div>
 
                 <div class="field-group">
@@ -266,6 +267,52 @@ function setupUpload(inputId, nameId, zoneId) {
 
 setupUpload('fileCv',       'nameCv',       'zoneCv');
 setupUpload('fileIdentite', 'nameIdentite', 'zoneIdentite');
+
+// Validation dynamique du numéro selon le type de pièce
+(function () {
+    const typeSelect  = document.getElementById('typeIdentite');
+    const numeroInput = document.getElementById('numeroIdentite');
+    const hint        = document.getElementById('hintNumero');
+
+    const configs = {
+        passeport : { pattern: '[A-Za-z0-9]{6,9}', maxlength: '9',  placeholder: 'Ex: AB1234567',       hint: 'Lettres et chiffres – 6 à 9 caractères',  inputmode: 'text' },
+        cni       : { pattern: '[0-9]{1,10}',       maxlength: '10', placeholder: 'Ex: 0123456789',      hint: 'Chiffres uniquement – max 10 caractères', inputmode: 'numeric' },
+        cip       : { pattern: '[0-9]{1,10}',       maxlength: '10', placeholder: 'Ex: 0123456789',      hint: 'Chiffres uniquement – max 10 caractères', inputmode: 'numeric' },
+        autre     : { pattern: '[A-Za-z0-9]{1,10}', maxlength: '10', placeholder: 'Numéro du document',  hint: 'Lettres ou chiffres – max 10 caractères', inputmode: 'text' },
+    };
+
+    function applyConfig() {
+        const cfg = configs[typeSelect.value];
+        if (!cfg) {
+            numeroInput.removeAttribute('pattern');
+            numeroInput.removeAttribute('maxlength');
+            numeroInput.setAttribute('placeholder', 'Sélectionnez d\'abord le type de pièce');
+            numeroInput.setAttribute('inputmode', 'text');
+            hint.textContent = '';
+            return;
+        }
+        numeroInput.setAttribute('pattern',     cfg.pattern);
+        numeroInput.setAttribute('maxlength',   cfg.maxlength);
+        numeroInput.setAttribute('placeholder', cfg.placeholder);
+        numeroInput.setAttribute('inputmode',   cfg.inputmode);
+        hint.textContent = cfg.hint;
+        numeroInput.value = '';
+    }
+
+    typeSelect.addEventListener('change', applyConfig);
+
+    // Majuscules automatiques pour le passeport
+    numeroInput.addEventListener('input', function () {
+        if (typeSelect.value === 'passeport') {
+            const pos = this.selectionStart;
+            this.value = this.value.toUpperCase();
+            this.setSelectionRange(pos, pos);
+        }
+    });
+
+    // Appliquer si old() a restauré une valeur au rechargement
+    if (typeSelect.value) applyConfig();
+})();
 </script>
 
 </body>
