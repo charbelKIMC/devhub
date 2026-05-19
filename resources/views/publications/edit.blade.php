@@ -675,5 +675,86 @@ function setupSingleNew() {
     }
 }
 </script>
+
+{{-- ─── Modal confirmation (data-confirm) ─── --}}
+<div id="confirmModal"
+     style="display:none;position:fixed;inset:0;z-index:9999;
+            align-items:center;justify-content:center;
+            background:rgba(0,0,0,0.45);">
+    <div style="background:white;border-radius:16px;padding:2rem;
+                max-width:400px;width:90%;
+                box-shadow:0 20px 60px rgba(0,0,0,0.2);text-align:center;">
+        <div id="confirmIcon"
+             style="width:56px;height:56px;border-radius:50%;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.4rem;margin:0 auto 1rem;"></div>
+        <h3 id="confirmTitle"
+            style="font-family:'Urbanist',sans-serif;font-size:1rem;
+                   font-weight:800;color:#111827;margin-bottom:0.5rem;"></h3>
+        <p id="confirmMessage"
+           style="font-size:0.82rem;color:#6B7280;
+                  margin-bottom:1.5rem;line-height:1.6;"></p>
+        <div style="display:flex;gap:0.75rem;">
+            <button id="confirmCancelBtn"
+                    style="flex:1;padding:0.65rem;background:#F3F4F6;
+                           color:#374151;border:none;border-radius:10px;
+                           font-size:0.875rem;font-weight:600;cursor:pointer;
+                           font-family:'DM Sans',sans-serif;">
+                Annuler
+            </button>
+            <button id="confirmOkBtn"
+                    style="flex:1;padding:0.65rem;border:none;
+                           border-radius:10px;font-size:0.875rem;
+                           font-weight:600;cursor:pointer;
+                           font-family:'DM Sans',sans-serif;color:white;">
+                Confirmer
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    var modal       = document.getElementById('confirmModal');
+    var confirmBtn  = document.getElementById('confirmOkBtn');
+    var cancelBtn   = document.getElementById('confirmCancelBtn');
+    var pendingForm = null;
+
+    var types = {
+        danger:  { bg:'#FEE2E2', color:'#DC2626', icon:'fa-trash',       btn:'#DC2626' },
+        warning: { bg:'#FEF9C3', color:'#854D0E', icon:'fa-exclamation',  btn:'#F59E0B' },
+        success: { bg:'#D1FAE5', color:'#065F46', icon:'fa-check-circle', btn:'#22C55E' },
+        info:    { bg:'#EDE9FE', color:'#7C3AED', icon:'fa-info-circle',  btn:'#7C3AED' },
+    };
+
+    function openConfirm(form) {
+        pendingForm = form;
+        document.getElementById('confirmTitle').textContent   = form.dataset.title   || 'Confirmer';
+        document.getElementById('confirmMessage').textContent = form.dataset.confirm || 'Confirmer cette action ?';
+        var cfg = types[form.dataset.type] || types.info;
+        var iconEl = document.getElementById('confirmIcon');
+        iconEl.style.background = cfg.bg;
+        iconEl.style.color      = cfg.color;
+        iconEl.innerHTML        = '<i class="fas ' + cfg.icon + '"></i>';
+        confirmBtn.style.background = cfg.btn;
+        modal.style.display = 'flex';
+    }
+
+    function closeConfirm() { modal.style.display = 'none'; pendingForm = null; }
+
+    confirmBtn.addEventListener('click', function() {
+        if (pendingForm) { var f = pendingForm; closeConfirm(); f.submit(); }
+    });
+    cancelBtn.addEventListener('click', closeConfirm);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeConfirm(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeConfirm(); });
+
+    document.addEventListener('submit', function(e) {
+        if (e.target.hasAttribute('data-confirm')) {
+            e.preventDefault();
+            openConfirm(e.target);
+        }
+    }, true);
+})();
+</script>
 </body>
 </html>
