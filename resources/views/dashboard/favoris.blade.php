@@ -278,7 +278,7 @@
                                 <span class="fav-type-badge {{ $tc[1] }}">
                                     <i class="fas {{ $tc[2] }}"></i> {{ $tc[0] }}
                                 </span>
-                                <button class="btn-unsave favori-btn active" data-id="{{ $pub->id }}"
+                                <button class="btn-unsave btn-retirer-fav" data-id="{{ $pub->id }}"
                                         title="Retirer des favoris" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()">
                                     <i class="fas fa-bookmark"></i>
                                 </button>
@@ -362,7 +362,7 @@
             });
         });
         // Retirer favori — masquer la card immédiatement
-        document.querySelectorAll('.favori-btn').forEach(function(btn) {
+        document.querySelectorAll('.btn-retirer-fav').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 var card = this.closest('.fav-card');
