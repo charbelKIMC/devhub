@@ -468,18 +468,20 @@
         }
 
         @media (max-width: 576px) {
-            .pub-header { gap: 0.5rem; }
+            .pub-header { gap: 0.4rem; padding: 0 0.75rem; }
             .header-author { display: none; }
             .header-divider { display: none; }
+            .header-pub-title { display: none; }
             .btn-back span { display: none; }
-            .btn-back { padding: 0.4rem 0.5rem; }
+            .btn-back { padding: 0.4rem 0.5rem; flex-shrink: 0; }
+            .btn-label { display: none; }
+            .header-btn { padding: 0.4rem 0.5rem; }
             .header-logo-mobile {
-                display: flex; align-items: center; gap: 0.4rem;
-                font-family: 'Urbanist', sans-serif; font-size: 1rem;
-                font-weight: 800; color: var(--purple); flex: 1;
-                text-decoration: none;
+                display: flex; align-items: center;
+                flex: 1; text-decoration: none;
             }
-            .header-logo-mobile img { height: 22px; }
+            .header-logo-mobile img { height: 26px; }
+            .header-actions { gap: 0.3rem; }
         }
     </style>
 </head>
@@ -528,17 +530,17 @@
                     @if($publication->type === 'projet_collaboratif' && $publication->auteur_id !== Auth::id())
                         @if($dejaMembre)
                             <span class="header-btn" style="background:#D1FAE5;color:#065F46;border:1.5px solid #6EE7B7;cursor:default;">
-                                <i class="fas fa-check-circle"></i> Membre
+                                <i class="fas fa-check-circle"></i><span class="btn-label"> Membre</span>
                             </span>
                         @elseif($dejaCandidat)
                             <span class="header-btn" style="background:#FEF9C3;color:#92400E;border:1.5px solid #FCD34D;cursor:default;">
-                                <i class="fas fa-clock"></i> Candidature envoyée
+                                <i class="fas fa-clock"></i><span class="btn-label"> Candidature envoyée</span>
                             </span>
                         @else
                             <button class="header-btn btn-collab collaboration-btn"
                                     data-id="{{ $publication->id }}"
                                     data-titre="{{ $publication->titre }}">
-                                <i class="fas fa-handshake"></i> Collaborer
+                                <i class="fas fa-handshake"></i><span class="btn-label"> Collaborer</span>
                             </button>
                         @endif
                     @endif
@@ -548,7 +550,7 @@
                         @php $dejaAvis = $publication->avis->where('auteur_id', Auth::id())->first(); @endphp
                         @if(!$dejaAvis)
                             <button class="header-btn btn-avis" id="btnOpenAvis">
-                                <i class="fas fa-star"></i> Avis
+                                <i class="fas fa-star"></i><span class="btn-label"> Avis</span>
                             </button>
                         @endif
                     @endif
@@ -557,20 +559,20 @@
                     @if($publication->type === 'projet_collaboratif' && $publication->projetCollaboratif?->phase === 'en_cours' && $publication->auteur_id === Auth::id())
                         <button type="button" class="header-btn" id="btnTerminerCollab"
                             style="background:#FEE2E2;color:#DC2626;border:1.5px solid #FCA5A5;">
-                            <i class="fas fa-flag-checkered"></i> Clôturer
+                            <i class="fas fa-flag-checkered"></i><span class="btn-label"> Clôturer</span>
                         </button>
                     @endif
 
                     {{-- Modifier / Supprimer --}}
                     @if($publication->auteur_id === Auth::id())
                         <a href="{{ route('publications.edit', $publication->id) }}" class="header-btn btn-edit">
-                            <i class="fas fa-edit"></i> Modifier
+                            <i class="fas fa-edit"></i><span class="btn-label"> Modifier</span>
                         </a>
                         <form action="{{ route('publications.destroy', $publication->id) }}" method="POST"
                             onsubmit="return confirm('Supprimer ?')" style="display:inline;">
                             @csrf @method('DELETE')
                             <button type="submit" class="header-btn btn-delete">
-                                <i class="fas fa-trash"></i> Supprimer
+                                <i class="fas fa-trash"></i><span class="btn-label"> Supprimer</span>
                             </button>
                         </form>
                     @endif
