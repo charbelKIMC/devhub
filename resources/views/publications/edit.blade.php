@@ -354,7 +354,10 @@
             <form method="POST"
                   action="{{ route('publications.update', $publication->id) }}"
                   enctype="multipart/form-data"
-                  id="editForm">
+                  id="editForm"
+                  data-confirm="Les modifications seront enregistrées et publiées. Voulez-vous continuer ?"
+                  data-title="Enregistrer les modifications"
+                  data-type="info">
                 @csrf
                 @method('PUT')
 

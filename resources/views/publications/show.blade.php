@@ -577,7 +577,10 @@
                             <i class="fas fa-edit"></i><span class="btn-label"> Modifier</span>
                         </a>
                         <form action="{{ route('publications.destroy', $publication->id) }}" method="POST"
-                            onsubmit="return confirm('Supprimer ?')" style="display:inline;">
+                            style="display:inline;"
+                            data-confirm="Cette publication sera définitivement supprimée. Cette action est irréversible."
+                            data-title="Supprimer la publication"
+                            data-type="danger">
                             @csrf @method('DELETE')
                             <button type="submit" class="header-btn btn-delete">
                                 <i class="fas fa-trash"></i><span class="btn-label"> Supprimer</span>
