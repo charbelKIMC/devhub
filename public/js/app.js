@@ -34,6 +34,13 @@ document.addEventListener('click', () => {
     hideSearchDropdown();
 });
 
+// ─── UTILITAIRES ────────────────────────────────────────────
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // ─── RECHERCHE LIVE ──────────────────────────────────────────
 (function() {
     const input    = document.getElementById('searchInput');
@@ -51,12 +58,6 @@ document.addEventListener('click', () => {
         projet_personnel:    { label: 'Projet',       icon: 'fa-folder',     bg: '#EDE9FE', color: '#7C3AED' },
         projet_collaboratif: { label: 'Collaboratif', icon: 'fa-users',      bg: '#D1FAE5', color: '#065F46' },
     };
-
-    function escHtml(str) {
-        return String(str)
-            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
 
     function escRegex(str) {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -324,12 +325,6 @@ function initCommentaires() {
     });
 }
 
-function escHtml(str) {
-    return String(str)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
 // ─── MODAL PUBLICATION ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -499,11 +494,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ─── EXPOSITION GLOBALE des inits (utile si contenu chargé dynamiquement) ────
+window.DevHub = window.DevHub || {};
+window.DevHub.initLikes        = initLikes;
+window.DevHub.initFavoris      = initFavoris;
+window.DevHub.initCommentaires = initCommentaires;
+
 // ─── MODAL COLLABORATION ─────────────────────────────────────
-let collabPubId = null;
+let _collabPubId = null;
 
 function openCollabModal(id, titre) {
-    collabPubId = id;
+    _collabPubId = id;
     document.getElementById('collabModalTitre').textContent = titre || 'ce projet';
     document.getElementById('collabPosteSelected').value = '';
     document.getElementById('collabMotivation').value = '';
@@ -539,7 +540,7 @@ document.getElementById('btnSubmitCollab')?.addEventListener('click', () => {
     const btn        = document.getElementById('btnSubmitCollab');
 
     if (!poste) { document.getElementById('collabPosteError').style.display = 'block'; return; }
-    if (!collabPubId) return;
+    if (!_collabPubId) return;
 
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
     btn.disabled  = true;
@@ -552,7 +553,7 @@ document.getElementById('btnSubmitCollab')?.addEventListener('click', () => {
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            projet_collaboratif_id: collabPubId,
+            projet_collaboratif_id: _collabPubId,
             poste_souhaite:         poste,
             motivation:             motivation,
         }),

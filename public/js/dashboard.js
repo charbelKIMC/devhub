@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Commentaires inline toggle ───
     document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
+        if (btn.dataset.toggleInit) return;
+        btn.dataset.toggleInit = '1';
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const form = document.getElementById('commentForm' + this.dataset.id);
@@ -169,5 +171,11 @@ document.getElementById('quickChatForm')?.addEventListener('submit', e => {
 function closeQuickChat() {
     document.getElementById('quickChatBox').style.display = 'none';
     clearInterval(quickChatPolling);
+    quickChatPolling = null;
     document.querySelectorAll('.quick-chat-contact').forEach(c => c.style.background = '');
 }
+
+// Nettoyage polling au déchargement de la page
+window.addEventListener('beforeunload', () => {
+    if (quickChatPolling) clearInterval(quickChatPolling);
+});
