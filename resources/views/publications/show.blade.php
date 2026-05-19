@@ -32,14 +32,17 @@
             font-family: 'DM Sans', sans-serif;
             background: var(--white);
             color: var(--gray-900);
+            overflow-x: hidden;
         }
 
         /* ─── PAGE WRAPPER pleine hauteur ─── */
-        
-        .main-content { display: flex;
+        .main-content {
+            display: flex;
             flex-direction: column;
-            
-            height: 100vh;  }
+            height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
 
         /* ─── HEADER ─── */
         .pub-header {
@@ -184,6 +187,8 @@
             font-size: 1.75rem; font-weight: 800;
             color: var(--gray-900); line-height: 1.2;
             margin-bottom: 1.5rem;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         /* Description */
@@ -191,6 +196,8 @@
             font-size: 0.95rem; color: var(--gray-600);
             line-height: 1.85; white-space: pre-line;
             margin-bottom: 1.5rem;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         /* Liens */
@@ -460,28 +467,29 @@
         }
 
         @media (max-width: 768px) {
-            .pub-header { padding: 0 1rem; height: 56px; gap: 0.65rem; }
-            .header-pub-title { display: none; }
-            .header-divider { display: none; }
-            .pub-title { font-size: 1.35rem; }
-            .pub-left-inner { padding: 1rem; }
-        }
-
-        @media (max-width: 576px) {
-            .pub-header { gap: 0.4rem; padding: 0 0.75rem; }
+            .pub-header { padding: 0 1rem; height: 56px; gap: 0.5rem; }
             .header-author { display: none; }
             .header-divider { display: none; }
             .header-pub-title { display: none; }
-            .btn-back span { display: none; }
-            .btn-back { padding: 0.4rem 0.5rem; flex-shrink: 0; }
-            .btn-label { display: none; }
-            .header-btn { padding: 0.4rem 0.5rem; }
             .header-logo-mobile {
                 display: flex; align-items: center;
                 flex: 1; text-decoration: none;
             }
             .header-logo-mobile img { height: 26px; }
+            .pub-title { font-size: 1.35rem; }
+            .pub-left-inner { padding: 1rem; }
+            .pub-meta-row { gap: 0.5rem; }
+        }
+
+        @media (max-width: 576px) {
+            .pub-header { gap: 0.4rem; padding: 0 0.75rem; }
+            .btn-back span { display: none; }
+            .btn-back { padding: 0.4rem 0.5rem; }
+            .btn-label { display: none; }
+            .header-btn { padding: 0.4rem 0.5rem; }
             .header-actions { gap: 0.3rem; }
+            .pub-title { font-size: 1.2rem; }
+            .pub-left-inner { padding: 0.85rem; }
         }
     </style>
 </head>
