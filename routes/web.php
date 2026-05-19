@@ -26,6 +26,8 @@ use App\Http\Controllers\MembreProjetController;
 use App\Http\Controllers\ProjetPersonnelController;
 use App\Http\Controllers\ContratNdaController;
 use App\Http\Controllers\ContratMentorController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ContactController;
 
 // ─── Page d'accueil ───────────────────────────────────────────
 Route::get('/', function () {
@@ -71,6 +73,14 @@ Route::get('/developpeurs',           [ProfilController::class, 'liste'])->name(
 Route::get('/developpeurs/{id}',      [ProfilController::class, 'profilPublic'])->name('profil.public');
 Route::get('/devenir-mentor',         [MentoratController::class, 'showCandidatureExterne'])->name('mentor.externe');
 Route::post('/devenir-mentor',        [MentoratController::class, 'candidatureExterne'])->name('mentor.externe.store');
+
+// ─── Pages statiques publiques ────────────────────────────
+Route::get('/contact',                   [ContactController::class, 'index'])->name('contact');
+Route::post('/contact',                  [ContactController::class, 'store'])->name('contact.store');
+Route::get('/mentions-legales',          fn() => view('pages.mentions-legales'))->name('mentions-legales');
+Route::get('/politique-confidentialite', fn() => view('pages.politique-confidentialite'))->name('politique-confidentialite');
+Route::get('/conditions-utilisation',    fn() => view('pages.conditions-utilisation'))->name('conditions-utilisation');
+Route::post('/newsletter/abonner',       [NewsletterController::class, 'abonner'])->name('newsletter.abonner');
 
 // ─── Routes authentifiées — Développeur/Mentor (pas admin) ───
 Route::middleware(['auth', 'not.admin', 'not.mentor'])->group(function () {

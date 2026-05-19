@@ -336,6 +336,30 @@
 
 <footer class="footer">
     <div class="conteneur">
+
+        {{-- Newsletter --}}
+        <div class="footer-newsletter">
+            <div class="footer-newsletter-text">
+                <div class="footer-newsletter-title">Restez informé</div>
+                <p class="footer-newsletter-sub">Recevez les actualités et projets phares de la communauté DevHub.</p>
+            </div>
+            @if(session('newsletter_success'))
+                <div class="footer-newsletter-ok">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('newsletter_success') }}
+                </div>
+            @else
+                <form class="footer-newsletter-form" action="{{ route('newsletter.abonner') }}" method="POST">
+                    @csrf
+                    <input type="email" name="email" class="footer-newsletter-input" placeholder="votre@email.com" required>
+                    <button type="submit" class="footer-newsletter-btn">
+                        <i class="fas fa-paper-plane me-1"></i> S'abonner
+                    </button>
+                </form>
+                @error('email')<div class="footer-newsletter-err">{{ $message }}</div>@enderror
+            @endif
+        </div>
+        <div class="footer-newsletter-divider"></div>
+
         <div class="row">
             <div class="col-lg-4 mb-4">
                 <div class="footer-brand">
@@ -367,10 +391,10 @@
             <div class="col-lg-3 col-md-4 mb-4">
                 <h4 class="footer-title">Légal</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Mentions légales</a></li>
-                    <li><a href="#">Politique de confidentialité</a></li>
-                    <li><a href="#">Conditions d'utilisation</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="{{ route('mentions-legales') }}">Mentions légales</a></li>
+                    <li><a href="{{ route('politique-confidentialite') }}">Politique de confidentialité</a></li>
+                    <li><a href="{{ route('conditions-utilisation') }}">Conditions d'utilisation</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
                 </ul>
             </div>
         </div>
