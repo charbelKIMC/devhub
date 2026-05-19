@@ -171,9 +171,6 @@ Route::middleware(['auth', 'is.admin'])->prefix('admin')->name('admin.')->group(
     // Attribution mentors aux développeurs
     Route::post('/mentors/attribuer', [AdminController::class, 'attribuerMentor'])->name('mentors.attribuer');
 
-    // Attribution mentor aux projets collaboratifs
-    Route::post('/projets-collaboratifs/{id}/attribuer-mentor', [AdminController::class, 'attribuerMentorProjet'])->name('projets.attribuer.mentor');
-
     // Modération publications
     Route::get('/publications',          [AdminController::class, 'publications'])->name('publications');
     Route::delete('/publications/{id}',  [AdminController::class, 'supprimerPublication'])->name('publications.supprimer');

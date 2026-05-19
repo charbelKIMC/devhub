@@ -18,25 +18,31 @@ class AttribuerMentorJob implements ShouldQueue
 
     public function __construct(public int $publicationId) {}
 
-    public function handle(): void
+    public function handle(): void {} // conservé pour compatibilité queue — non utilisé
+
+    public static function tenterAttributionAutomatique(): void
     {
-        $projetCol = ProjetCollaboratif::where('publication_id', $this->publicationId)
-            ->whereNull('mentor_id')
-            ->first();
+        $mentor = self::trouverMentorDisponible();
+        if (!$mentor) return;
 
-        if (!$projetCol) return; // mentor déjà attribué entre temps
+        $projetsEnAttente = ProjetCollaboratif::whereNull('mentor_id')
+            ->where('taille_equipe_actuelle', '>', 0)
+            ->with('publication')
+            ->orderBy('publication_id')
+            ->get();
 
-        $pub = Publication::find($this->publicationId);
-        if (!$pub) return;
+        foreach ($projetsEnAttente as $projetCol) {
+            if (!$projetCol->publication) continue;
 
-        $mentor = $this->trouverMentorDisponible();
-        if (!$mentor) return; // toujours personne de dispo, on abandonne (un autre job sera lancé plus tard)
+            $currentMentor = self::trouverMentorDisponible();
+            if (!$currentMentor) break;
 
-        $conversation = Conversation::where('type_conversation', 'groupe_projet')
-            ->where('projet_collaboratif_id', $this->publicationId)
-            ->first();
+            $conversation = Conversation::where('type_conversation', 'groupe_projet')
+                ->where('projet_collaboratif_id', $projetCol->publication_id)
+                ->first();
 
-        $this->attribuer($mentor, $projetCol, $pub, $conversation);
+            self::attribuer($currentMentor, $projetCol, $projetCol->publication, $conversation);
+        }
     }
 
     public static function trouverMentorDisponible(): ?Utilisateur

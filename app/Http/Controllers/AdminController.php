@@ -35,43 +35,9 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        // Projets collaboratifs avec membres mais sans mentor attribué
-        $projetsSansMentor = \App\Models\ProjetCollaboratif::with(['publication.auteur'])
-            ->whereNull('mentor_id')
-            ->where('taille_equipe_actuelle', '>', 0)
-            ->orderByDesc('publication_id')
-            ->get();
-
-        $mentorsDisponibles = Utilisateur::where('role', 'mentor')
-            ->where('statut', 'actif')
-            ->withCount(['projetsEnMentorat as nb_actifs' => fn($q) =>
-                $q->whereIn('phase', ['ouvert', 'en_cours'])
-            ])
-            ->having('nb_actifs', '<', 3)
-            ->orderBy('nb_actifs')
-            ->get();
-
         return view('admin.dashboard', compact(
-            'stats', 'derniersUtilisateurs', 'dernieresAttributions',
-            'projetsSansMentor', 'mentorsDisponibles'
+            'stats', 'derniersUtilisateurs', 'dernieresAttributions'
         ));
-    }
-
-    public function attribuerMentorProjet(Request $request, $id)
-    {
-        $request->validate(['mentor_id' => 'required|exists:utilisateurs,id']);
-
-        $projetCol = \App\Models\ProjetCollaboratif::whereNull('mentor_id')->findOrFail($id);
-        $pub       = Publication::findOrFail($projetCol->publication_id);
-        $mentor    = Utilisateur::findOrFail($request->mentor_id);
-
-        $conversation = \App\Models\Conversation::where('type_conversation', 'groupe_projet')
-            ->where('projet_collaboratif_id', $projetCol->publication_id)
-            ->first();
-
-        \App\Jobs\AttribuerMentorJob::attribuer($mentor, $projetCol, $pub, $conversation);
-
-        return back()->with('success', $mentor->prenom . ' ' . $mentor->nom . ' a été attribué comme mentor du projet "' . $pub->titre . '".');
     }
 
     public function mentors()
@@ -146,16 +112,16 @@ class AdminController extends Controller
     public function terminerRelation($id)
     {
         $relation = \App\Models\RelationMentorat::findOrFail($id);
-        
-        // Mettre à jour le statut et la date de fin réelle
+
         $relation->update([
             'statut'  => 'terminée',
             'date_fin'=> now(),
         ]);
 
-        // Désactiver la conversation de mentorat liée
         \App\Models\Conversation::where('relation_mentorat_id', $relation->id)
             ->update(['statut_acceptation' => 'refusée']);
+
+        \App\Jobs\AttribuerMentorJob::tenterAttributionAutomatique();
 
         return back()->with('success', 'Relation de mentorat terminée.');
     }

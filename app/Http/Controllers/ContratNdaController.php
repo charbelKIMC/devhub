@@ -12,13 +12,12 @@ use App\Models\Utilisateur;
 use App\Jobs\AttribuerMentorJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ContratNdaController extends Controller
 {
-    private const MAX_MENTORES = 3;
 
     public function show($token)
     {
@@ -126,12 +125,12 @@ class ContratNdaController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($candidat->email)
                 ->send(new \App\Mail\CollabContratSigneCandidat($candidat, $pub, $pdfContenu));
-        } catch (\Throwable $e) { \Log::error('Mail contrat signe candidat: ' . $e->getMessage()); }
+        } catch (\Throwable $e) { Log::error('Mail contrat signe candidat: ' . $e->getMessage()); }
 
         try {
             \Illuminate\Support\Facades\Mail::to($auteur->email)
                 ->send(new \App\Mail\CollabContratSigneAuteur($auteur, $candidat, $pub, $pdfContenu));
-        } catch (\Throwable $e) { \Log::error('Mail contrat signe auteur: ' . $e->getMessage()); }
+        } catch (\Throwable $e) { Log::error('Mail contrat signe auteur: ' . $e->getMessage()); }
 
         // Premier membre → mentor attribué immédiatement
         if ($projetCol->taille_equipe_actuelle == 1) {
@@ -163,21 +162,6 @@ class ContratNdaController extends Controller
                 'est_systeme'     => true,
             ]);
 
-            // Email à l'admin (pas de notification in-app — l'admin reçoit uniquement des mails)
-            $admin = Utilisateur::where('role', 'admin')->first();
-            if ($admin) {
-                try {
-                    \Illuminate\Support\Facades\Mail::send('emails.admin-mentor-requis', [
-                        'titre' => $pub->titre,
-                        'lien'  => route('admin.dashboard'),
-                    ], function ($mail) use ($admin) {
-                        $mail->to($admin->email)->subject('Attribution mentor requise – DevHub');
-                    });
-                } catch (\Throwable $e) { \Log::error('Mail admin mentor requis: ' . $e->getMessage()); }
-            }
-
-            // Job différé : re-tenter dans 1 jour (au cas où un mentor se libère)
-            AttribuerMentorJob::dispatch($pub->id)->delay(now()->addDay());
             return;
         }
 

@@ -148,6 +148,9 @@ class ProjetPersonnelController extends Controller
 
             // Retirer le flag en_attente_mentor
             Auth::user()->update(['en_attente_mentor' => false]);
+
+            // Un créneau mentor vient de se libérer → tenter d'attribuer aux projets en attente
+            \App\Jobs\AttribuerMentorJob::tenterAttributionAutomatique();
         }
 
         return redirect()->route('projets-personnels.index')

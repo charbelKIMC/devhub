@@ -314,7 +314,7 @@ class PublicationController extends Controller
         }
 
         // Clôturer le projet et le rendre public
-        $projetCol->update(['phase' => 'terminé']);
+        $projetCol->update(['phase' => 'terminé', 'mentor_id' => null]);
         $publication->update(['statut' => 'publié']);
 
         // Désactiver la conversation de groupe
@@ -337,6 +337,9 @@ class PublicationController extends Controller
             ]);
             try { broadcast(new \App\Events\NotificationCreee($notif)); } catch (\Throwable) {}
         }
+
+        // Un créneau mentor vient de se libérer → tenter d'attribuer aux projets en attente
+        \App\Jobs\AttribuerMentorJob::tenterAttributionAutomatique();
 
         return back()->with('success', 'Projet clôturé. La discussion est maintenant en lecture seule.');
     }
