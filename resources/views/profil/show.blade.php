@@ -345,6 +345,44 @@
         .settings-wrap { grid-template-columns: 1fr; }
         .form-row { grid-template-columns: 1fr; }
     }
+
+    /* ─── MENTOR CENTERED HEADER ─── */
+    .profil-mentor-header {
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; padding: 0 0 1.5rem;
+        margin-top: -64px;
+    }
+    .profil-mentor-cam-wrap { position: relative; display: inline-block; margin-bottom: 0.85rem; }
+    .profil-mentor-avatar {
+        width: 128px; height: 128px; border-radius: 50%;
+        border: 4px solid white; object-fit: cover;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        display: block;
+    }
+    .profil-mentor-avatar-text {
+        width: 128px; height: 128px; border-radius: 50%;
+        border: 4px solid white;
+        background: var(--purple-light); color: var(--purple);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2.8rem; font-weight: 800;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .profil-mentor-cam-btn {
+        position: absolute; bottom: 4px; right: 4px;
+        width: 26px; height: 26px; border-radius: 50%;
+        background: var(--purple); color: white;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.65rem; cursor: pointer; border: 2px solid white;
+        transition: background 0.2s; text-decoration: none;
+    }
+    .profil-mentor-cam-btn:hover { background: var(--purple-dark); }
+    .profil-mentor-badge {
+        display: inline-flex; align-items: center; gap: 0.35rem;
+        background: #EDE9FE; color: #7C3AED;
+        padding: 0.22rem 0.7rem; border-radius: 6px;
+        font-size: 0.78rem; font-weight: 600; margin-top: 0.35rem;
+    }
+    .profil-info-row.centered { justify-content: center; }
 </style>
 @endsection
 
@@ -357,7 +395,47 @@
 <div class="profil-top-wrap">
     <div class="profil-top-inner">
 
-        <!-- Identité + actions -->
+        @if($utilisateur->role === 'mentor')
+        <!-- ── Mentor : avatar centré ── -->
+        <div class="profil-mentor-header">
+            <div class="profil-mentor-cam-wrap">
+                @if($utilisateur->photo)
+                    <img src="{{ $utilisateur->photo_url }}" class="profil-mentor-avatar" alt="">
+                @else
+                    <div class="profil-mentor-avatar-text">
+                        {{ strtoupper(substr($utilisateur->prenom, 0, 1)) }}
+                    </div>
+                @endif
+                @if(Auth::id() === $utilisateur->id)
+                    <a href="#" class="profil-mentor-cam-btn"
+                       onclick="event.preventDefault();document.getElementById('photoQuickInput').click();">
+                        <i class="fas fa-camera"></i>
+                    </a>
+                @endif
+            </div>
+            <div class="profil-name">{{ $utilisateur->prenom }} {{ $utilisateur->nom }}</div>
+            <div class="profil-pseudo">{{ '@' . $utilisateur->pseudo }}</div>
+            <div class="profil-mentor-badge">
+                <i class="fas fa-star"></i>
+                {{ $utilisateur->specialite ?? 'Mentor DevHub' }}
+            </div>
+            @if(Auth::id() === $utilisateur->id)
+                <button class="btn-edit-profil" style="margin-top:0.9rem;"
+                        onclick="document.querySelector('[data-tab=settings]').click()">
+                    <i class="fas fa-edit"></i> Modifier mon profil
+                </button>
+            @else
+                <form action="{{ route('messagerie.store') }}" method="POST" style="display:inline;margin-top:0.9rem;">
+                    @csrf
+                    <input type="hidden" name="destinataire_id" value="{{ $utilisateur->id }}">
+                    <button type="submit" class="btn-message-profil">
+                        <i class="fas fa-comment"></i> Message
+                    </button>
+                </form>
+            @endif
+        </div>
+        @else
+        <!-- ── Développeur : layout standard ── -->
         <div class="profil-identity-row">
             <div class="profil-avatar-zone">
                 @if($utilisateur->photo)
@@ -401,9 +479,10 @@
                 @endif
             </div>
         </div>
+        @endif
 
         <!-- Infos + réseaux sociaux -->
-        <div class="profil-info-row">
+        <div class="profil-info-row {{ $utilisateur->role === 'mentor' ? 'centered' : '' }}">
             @if($utilisateur->localisation)
                 <div class="profil-info-item">
                     <i class="fas fa-map-marker-alt"></i> {{ $utilisateur->localisation }}
@@ -437,7 +516,8 @@
             </div>
         </div>
 
-        <!-- Stats bar -->
+        <!-- Stats bar (développeurs uniquement) -->
+        @if($utilisateur->role !== 'mentor')
         @php
             $pubIds  = $utilisateur->publications()->pluck('id');
             $note    = \App\Models\Avis::whereIn('publication_id', $pubIds)->avg('note');
@@ -465,6 +545,7 @@
                 <div class="profil-stat-label">Note moy.</div>
             </div>
         </div>
+        @endif
     </div>
 </div>
 
@@ -518,10 +599,14 @@
         <!-- Onglets -->
         <div class="profil-tabs">
             <button class="profil-tab active" data-tab="activity">
-                <i class="fas fa-clock"></i> Activité
-                <span style="background:var(--purple-light);color:var(--purple);font-size:0.65rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;">
-                    {{ $utilisateur->publications()->where('statut','publié')->count() }}
-                </span>
+                @if($utilisateur->role === 'mentor')
+                    <i class="fas fa-star"></i> Profil
+                @else
+                    <i class="fas fa-clock"></i> Activité
+                    <span style="background:var(--purple-light);color:var(--purple);font-size:0.65rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;">
+                        {{ $utilisateur->publications()->where('statut','publié')->count() }}
+                    </span>
+                @endif
             </button>
             @if(Auth::id() === $utilisateur->id)
                 <button class="profil-tab" data-tab="settings">
@@ -530,8 +615,28 @@
             @endif
         </div>
 
-        <!-- Onglet activité -->
+        <!-- Onglet activité / profil -->
         <div class="tab-panel active" id="activity">
+            @if($utilisateur->role === 'mentor')
+                <div style="background:white;border:1px solid #F3F4F6;border-radius:16px;padding:2rem;text-align:center;">
+                    <div style="width:52px;height:52px;border-radius:14px;background:#EDE9FE;color:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 1rem;">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div style="font-family:'Urbanist',sans-serif;font-weight:800;font-size:1rem;color:#111827;margin-bottom:0.4rem;">
+                        Mentor DevHub
+                    </div>
+                    <p style="font-size:0.83rem;color:#9CA3AF;max-width:340px;margin:0 auto 1.25rem;line-height:1.6;">
+                        {{ $utilisateur->specialite ?? 'Expert DevHub' }}
+                    </p>
+                    @if($utilisateur->competences->isNotEmpty())
+                        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;">
+                            @foreach($utilisateur->competences as $comp)
+                                <span style="background:#F5F3FF;color:#7C3AED;padding:0.28rem 0.75rem;border-radius:6px;font-size:0.78rem;font-weight:600;">{{ $comp->nom }}</span>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @else
             @forelse($utilisateur->publications()->where('statut','publié')->orderBy('date_publication','desc')->get() as $pub)
                 @php
                     $typeConfig = [
@@ -588,6 +693,7 @@
                     @endif
                 </div>
             @endforelse
+            @endif
         </div>
 
         <!-- Onglet paramètres -->
