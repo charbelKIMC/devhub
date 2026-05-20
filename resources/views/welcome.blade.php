@@ -145,15 +145,15 @@
                         $totalCollab = \App\Models\MembreProjet::count();
                     @endphp
                     <div class="stat-item">
-                        <div class="stat-number">{{ $totalDevs > 0 ? '+'.$totalDevs : '+1,000' }}</div>
+                        <div class="stat-number">{{ $totalDevs > 0 ? '+'.$totalDevs : '0' }}</div>
                         <div class="stat-label">Talents inscrits</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">{{ $totalPubs > 0 ? '+'.$totalPubs : '+2,500' }}</div>
+                        <div class="stat-number">{{ $totalPubs > 0 ? '+'.$totalPubs : '0' }}</div>
                         <div class="stat-label">Projets publiés</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">{{ $totalCollab > 0 ? '+'.$totalCollab : '+800' }}</div>
+                        <div class="stat-number">{{ $totalCollab > 0 ? '+'.$totalCollab : '0' }}</div>
                         <div class="stat-label">Collaborations</div>
                     </div>
                 </div>
