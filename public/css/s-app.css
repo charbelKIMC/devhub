@@ -20,14 +20,14 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-html { overflow-x: hidden; }
+html { overflow-x: clip; }
 
 body {
     font-family: 'DM Sans', sans-serif;
     background: var(--white);
     color: var(--gray-900);
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 /* ─── HEADER ─── */
