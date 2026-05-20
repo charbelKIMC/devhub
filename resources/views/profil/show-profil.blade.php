@@ -130,8 +130,8 @@
             @endif
         </div>
 
-        <!-- Compétences -->
-        @if($utilisateur->competences->isNotEmpty())
+        <!-- Compétences (développeurs uniquement dans la sidebar) -->
+        @if($utilisateur->role !== 'mentor' && $utilisateur->competences->isNotEmpty())
             <div class="sidebar-widget">
                 <div class="widget-title">Compétences</div>
                 <div class="skills-wrap">
@@ -142,20 +142,17 @@
             </div>
         @endif
 
-        <!-- CTA -->
+        <!-- CTA sidebar (développeurs uniquement) -->
+        @if($utilisateur->role !== 'mentor')
         <div class="sidebar-cta">
-            @if($utilisateur->role === 'mentor')
-                <h4>Bénéficiez d'un mentorat</h4>
-                <p>Rejoignez DevHub pour être accompagné par {{ $utilisateur->prenom }} et accéder à toute la communauté.</p>
-            @else
-                <h4>Rejoignez DevHub</h4>
-                <p>Créez un compte pour collaborer avec {{ $utilisateur->prenom }} et d'autres développeurs.</p>
-            @endif
+            <h4>Rejoignez DevHub</h4>
+            <p>Créez un compte pour collaborer avec {{ $utilisateur->prenom }} et d'autres développeurs.</p>
             <a href="{{ route('register') }}" class="cta-w">
                 <i class="fas fa-rocket me-1"></i>Créer un compte gratuit
             </a>
             <a href="{{ route('login') }}" class="cta-g">Déjà membre ? Se connecter</a>
         </div>
+        @endif
 
     </aside>
 
@@ -165,45 +162,46 @@
         @if($utilisateur->role === 'mentor')
 
         {{-- ── PROFIL MENTOR ── --}}
-        <div class="pub-section-title">Expertise de {{ $utilisateur->prenom }}</div>
+        <div class="pub-section-title">Profil de {{ $utilisateur->prenom }}</div>
 
-        <!-- Spécialité -->
-        <div style="background:#fff;border:1px solid #F3F4F6;border-radius:16px;padding:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:1.25rem;">
-            <div style="width:52px;height:52px;border-radius:14px;background:#EDE9FE;color:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">
-                <i class="fas fa-star"></i>
-            </div>
-            <div>
-                <div style="font-size:0.72rem;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.2rem;">Spécialité</div>
-                <div style="font-family:'Urbanist',sans-serif;font-weight:800;font-size:1.15rem;color:#111827;">{{ $utilisateur->specialite ?? 'Mentor DevHub' }}</div>
-            </div>
-        </div>
-
-        <!-- Compétences clés -->
-        @if($utilisateur->competences->isNotEmpty())
+        <!-- Spécialité + Compétences réunies -->
         <div style="background:#fff;border:1px solid #F3F4F6;border-radius:16px;padding:1.5rem;margin-bottom:1rem;">
-            <div style="font-size:0.72rem;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.85rem;">Technologies maîtrisées</div>
-            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                @foreach($utilisateur->competences as $comp)
-                    <span style="background:#F5F3FF;color:#7C3AED;padding:0.35rem 0.85rem;border-radius:20px;font-size:0.82rem;font-weight:600;">{{ $comp->nom }}</span>
-                @endforeach
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
+                <div style="width:48px;height:48px;border-radius:12px;background:#EDE9FE;color:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <div style="font-size:0.72rem;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Spécialité</div>
+                    <div style="font-family:'Urbanist',sans-serif;font-weight:800;font-size:1.1rem;color:#111827;">{{ $utilisateur->specialite ?? 'Mentor DevHub' }}</div>
+                </div>
             </div>
+            @if($utilisateur->competences->isNotEmpty())
+                <div style="font-size:0.72rem;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.6rem;">Technologies maîtrisées</div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.45rem;">
+                    @foreach($utilisateur->competences as $comp)
+                        <span style="background:#F5F3FF;color:#7C3AED;padding:0.3rem 0.8rem;border-radius:20px;font-size:0.8rem;font-weight:600;">{{ $comp->nom }}</span>
+                    @endforeach
+                </div>
+            @endif
         </div>
-        @endif
 
         <!-- CTA mentorat -->
-        <div style="background:linear-gradient(135deg,#7C3AED,#5B21B6);border-radius:16px;padding:2rem;text-align:center;margin-top:1.5rem;">
-            <div style="width:52px;height:52px;background:rgba(255,255,255,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.4rem;color:white;">
+        <div style="background:linear-gradient(135deg,#7C3AED,#5B21B6);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;">
+            <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 0.85rem;font-size:1.3rem;color:white;">
                 <i class="fas fa-graduation-cap"></i>
             </div>
-            <div style="color:white;font-family:'Urbanist',sans-serif;font-weight:800;font-size:1.15rem;margin-bottom:0.5rem;">
+            <div style="color:white;font-family:'Urbanist',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:0.45rem;">
                 Être accompagné par {{ $utilisateur->prenom }}
             </div>
-            <p style="color:rgba(255,255,255,0.8);font-size:0.85rem;margin-bottom:1.5rem;line-height:1.6;">
+            <p style="color:rgba(255,255,255,0.8);font-size:0.83rem;margin-bottom:1.25rem;line-height:1.6;">
                 Rejoignez DevHub pour demander un suivi personnalisé et progresser avec l'aide d'un expert.
             </p>
-            <a href="{{ route('register') }}" style="display:inline-block;background:white;color:#7C3AED;padding:0.7rem 1.75rem;border-radius:10px;font-weight:700;font-size:0.9rem;text-decoration:none;">
+            <a href="{{ route('register') }}" style="display:inline-block;background:white;color:#7C3AED;padding:0.65rem 1.5rem;border-radius:10px;font-weight:700;font-size:0.88rem;text-decoration:none;margin-bottom:0.6rem;">
                 <i class="fas fa-rocket me-1"></i> Rejoindre DevHub
             </a>
+            <div>
+                <a href="{{ route('login') }}" style="color:rgba(255,255,255,0.75);font-size:0.8rem;text-decoration:none;">Déjà membre ? Se connecter</a>
+            </div>
         </div>
 
         @else
