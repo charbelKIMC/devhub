@@ -25,9 +25,9 @@
 }
 
 .profil-avatar-wrap {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    margin-top: -48px; padding-bottom: 0.85rem;
-    flex-wrap: wrap; gap: 0.75rem;
+    display: flex; flex-direction: column; align-items: center;
+    margin-top: -52px; padding-bottom: 0.85rem;
+    text-align: center; gap: 0;
 }
 
 .profil-avatar {
@@ -194,30 +194,32 @@
             </a>
         </div>
 
-        <div style="flex:1;min-width:0;padding-top:0.5rem;">
+        <div style="padding-top:0.65rem;">
             <div style="font-family:'Urbanist',sans-serif;font-size:1.25rem;font-weight:800;color:var(--gray-900);">
                 {{ $user->prenom }} {{ $user->nom }}
             </div>
-            <div style="font-size:0.82rem;color:var(--gray-400);">{{ '@' . $user->pseudo }}</div>
-            <div class="mentor-badge-cert">
-                <i class="fas fa-check-circle"></i> Mentor certifié DevHub
+            <div style="font-size:0.82rem;color:var(--gray-400);margin-top:0.1rem;">{{ '@' . $user->pseudo }}</div>
+            <div style="display:flex;justify-content:center;margin-top:0.45rem;">
+                <div class="mentor-badge-cert">
+                    <i class="fas fa-check-circle"></i> Mentor certifié DevHub
+                </div>
             </div>
             @if($user->specialite)
-                <div style="font-size:0.78rem;color:var(--gray-500);margin-top:0.3rem;">
-                    <i class="fas fa-code me-1" style="color:var(--purple);"></i>{{ $user->specialite }}
+                <div style="font-size:0.78rem;color:var(--gray-500);margin-top:0.35rem;">
+                    <i class="fas fa-star me-1" style="color:var(--purple);"></i>{{ $user->specialite }}
                 </div>
             @endif
         </div>
     </div>
 
     @if($user->bio)
-        <p style="font-size:0.875rem;color:var(--gray-600);line-height:1.7;margin-bottom:0.85rem;">
+        <p style="font-size:0.875rem;color:var(--gray-600);line-height:1.7;margin-bottom:0.85rem;text-align:center;">
             {{ $user->bio }}
         </p>
     @endif
 
     <!-- Infos -->
-    <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;font-size:0.78rem;color:var(--gray-500);margin-bottom:0.75rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap;font-size:0.78rem;color:var(--gray-500);margin-bottom:0.75rem;">
         @if($user->localisation)
             <span><i class="fas fa-map-marker-alt me-1" style="color:var(--gray-400);"></i>{{ $user->localisation }}</span>
         @endif
