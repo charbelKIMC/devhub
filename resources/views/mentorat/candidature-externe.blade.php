@@ -8,23 +8,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/w-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mentor-candidature.css') }}">
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="header">
-    <div class="header-inner">
-        <div class="header-left">
-            <a href="{{ route('home') }}" class="back-link">
-                <i class="fas fa-arrow-left"></i> Retour à l'accueil
+    <div class="conteneur">
+        <nav class="navbar-welcome">
+            <a href="{{ route('home') }}" class="name-page text-black">
+                <span><img src="{{ asset('img/logo-devhub.png') }}" alt="Logo de DevHub" class="logo-icon"></span>
+                DevHub
             </a>
-        </div>
-        <div class="header-auth">
-            <a href="{{ route('register') }}" class="btn-fill">Continuer en tant que développeur</a>
-        </div>
+            <div class="nav-center" id="navCenter">
+                <div class="nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" href="#">Communauté <i class="fas fa-chevron-down nav-arrow"></i></a>
+                    <div class="nav-dropdown-menu">
+                        <a href="{{ route('developpeurs') }}"><i class="fas fa-code me-2"></i>Développeurs</a>
+                        <a href="{{ route('developpeurs') }}?role=mentor"><i class="fas fa-chalkboard-teacher me-2"></i>Mentors</a>
+                    </div>
+                </div>
+                <a href="{{ route('home') }}#section-features" class="nav-link">Nos services</a>
+                <a href="{{ route('home') }}#section-stats" class="nav-link">Statistiques</a>
+            </div>
+            <div class="header-right">
+                <div class="header-buttons">
+                    <a href="{{ route('mentor.externe') }}" class="btn-outline-custom">
+                        <i class="fas fa-paper-plane"></i> Postuler comme mentor
+                    </a>
+                    <a href="{{ route('login') }}" class="btn-custom">Se connecter</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </nav>
     </div>
 </header>
+
+<!-- MENU MOBILE -->
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-inner">
+        <div class="mobile-section">
+            <div class="mobile-section-title">Communauté</div>
+            <a href="{{ route('developpeurs') }}" class="mobile-link"><i class="fas fa-code me-2"></i>Développeurs</a>
+            <a href="{{ route('mentor.externe') }}" class="mobile-link"><i class="fas fa-star me-2"></i>Devenir mentor</a>
+        </div>
+        <div class="mobile-section">
+            <div class="mobile-section-title">Légal</div>
+            <a href="{{ route('contact') }}" class="mobile-link"><i class="fas fa-envelope me-2"></i>Contact</a>
+            <a href="{{ route('mentions-legales') }}" class="mobile-link"><i class="fas fa-file-alt me-2"></i>Mentions légales</a>
+        </div>
+        <div class="mobile-buttons">
+            <a href="{{ route('mentor.externe') }}" class="btn-outline-custom w-100 text-center mb-2">
+                <i class="fas fa-paper-plane me-2"></i>Postuler comme mentor
+            </a>
+            <a href="{{ route('login') }}" class="btn-custom w-100 text-center">Se connecter</a>
+        </div>
+    </div>
+</div>
 
 <!-- HERO BANDEAU -->
 <div class="mentor-hero">

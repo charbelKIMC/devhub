@@ -115,7 +115,7 @@ body {
 
 /* ─── HERO BANDEAU ─── */
 .mentor-hero {
-    background: linear-gradient(135deg, var(--purple) 0%, #4F46E5 100%);
+    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
     padding: 4rem 2rem;
     text-align: center;
 }
@@ -124,27 +124,27 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255,255,255,0.15);
-    color: white;
+    background: #DDD6FE;
+    color: #5B21B6;
     padding: 0.4rem 1rem;
     border-radius: 20px;
     font-size: 0.82rem;
     font-weight: 600;
     margin-bottom: 1.25rem;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid #C4B5FD;
 }
 
 .mentor-hero-title {
     font-family: 'Urbanist', sans-serif;
     font-size: 2.5rem;
     font-weight: 800;
-    color: white;
+    color: #111827;
     margin-bottom: 0.75rem;
     letter-spacing: -1px;
 }
 
 .mentor-hero-sub {
-    color: rgba(255,255,255,0.8);
+    color: #6B7280;
     font-size: 1rem;
     max-width: 580px;
     margin: 0 auto;
