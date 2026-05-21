@@ -9,7 +9,7 @@
 /* ─── HEADER PROFIL ─── */
 .profil-cover {
     height: 140px;
-    background: linear-gradient(135deg, #7C3AED 0%, #4C1D95 100%);
+    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
     border-radius: 16px; position: relative; overflow: hidden;
     margin-bottom: 0;
 }
@@ -25,9 +25,9 @@
 }
 
 .profil-avatar-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    margin-top: -52px; padding-bottom: 0.85rem;
-    text-align: center; gap: 0;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: -48px; padding-bottom: 0.85rem;
+    flex-wrap: wrap; gap: 0.75rem;
 }
 
 .profil-avatar {
@@ -166,6 +166,13 @@
     .settings-wrap { grid-template-columns:1fr; }
     .form-row { grid-template-columns:1fr; }
     .profil-stats { grid-template-columns:repeat(3,1fr); }
+    .profil-avatar-wrap {
+        flex-direction: column; align-items: center;
+        text-align: center; margin-top: -52px;
+    }
+    .profil-name-zone { text-align: center; }
+    .profil-bio { text-align: center; }
+    .profil-infos-row { justify-content: center !important; }
 }
 </style>
 @endsection
@@ -194,7 +201,7 @@
             </a>
         </div>
 
-        <div style="padding-top:0.65rem;">
+        <div class="profil-name-zone" style="flex:1;min-width:0;padding-top:0.5rem;">
             <div style="font-family:'Urbanist',sans-serif;font-size:1.25rem;font-weight:800;color:var(--gray-900);">
                 {{ $user->prenom }} {{ $user->nom }}
             </div>
@@ -213,13 +220,13 @@
     </div>
 
     @if($user->bio)
-        <p style="font-size:0.875rem;color:var(--gray-600);line-height:1.7;margin-bottom:0.85rem;text-align:center;">
+        <p class="profil-bio" style="font-size:0.875rem;color:var(--gray-600);line-height:1.7;margin-bottom:0.85rem;">
             {{ $user->bio }}
         </p>
     @endif
 
     <!-- Infos -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap;font-size:0.78rem;color:var(--gray-500);margin-bottom:0.75rem;">
+    <div class="profil-infos-row" style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;font-size:0.78rem;color:var(--gray-500);margin-bottom:0.75rem;">
         @if($user->localisation)
             <span><i class="fas fa-map-marker-alt me-1" style="color:var(--gray-400);"></i>{{ $user->localisation }}</span>
         @endif
