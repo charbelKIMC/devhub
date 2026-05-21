@@ -10,7 +10,7 @@
 .profil-cover {
     height: 140px;
     background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
-    border-radius: 16px; position: relative; overflow: hidden;
+    border-radius: 16px 16px 0 0; position: relative; overflow: hidden;
     margin-bottom: 0;
 }
 .profil-cover::after {
@@ -20,7 +20,8 @@
 
 .profil-head-card {
     background: white; border: 1px solid var(--gray-200);
-    border-radius: 16px; padding: 0 1.5rem 1.25rem;
+    border-top: none;
+    border-radius: 0 0 16px 16px; padding: 0 1.5rem 1.25rem;
     margin-bottom: 1.25rem; position: relative;
 }
 

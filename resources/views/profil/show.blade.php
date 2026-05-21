@@ -7,14 +7,9 @@
     /* ─── COVER + AVATAR ─── */
     .profil-cover {
         height: 180px;
-        background: linear-gradient(135deg, #7C3AED 0%, #4C1D95 100%);
+        background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
         position: relative;
         overflow: hidden;
-    }
-    .profil-cover::after {
-        content: '';
-        position: absolute; inset: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
     .profil-top-wrap {
@@ -549,21 +544,7 @@
     </div>
 </div>
 
-<!-- Alertes -->
-@if(session('success') || $errors->any())
-    <div style="max-width:1100px;margin:0.75rem auto;padding:0 1.5rem;">
-        @if(session('success'))
-            <div style="background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0;border-radius:10px;padding:.75rem 1rem;font-size:.875rem;">
-                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            </div>
-        @endif
-        @if($errors->any())
-            <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;border-radius:10px;padding:.75rem 1rem;font-size:.875rem;">
-                <i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}
-            </div>
-        @endif
-    </div>
-@endif
+
 
 <!-- Contenu -->
 <div class="profil-content">

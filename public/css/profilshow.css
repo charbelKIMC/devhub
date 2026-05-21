@@ -60,14 +60,13 @@ body { background: white; }
 /* Couverture + avatar */
 .profile-cover {
     height: 220px;
-    background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #2563EB 100%);
+    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
     position: relative;
 }
 
 .profile-cover-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.15);
 }
 
 .profile-main-zone {
