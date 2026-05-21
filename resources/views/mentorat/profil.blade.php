@@ -205,11 +205,8 @@
             <div style="font-family:'Urbanist',sans-serif;font-size:1.25rem;font-weight:800;color:var(--gray-900);">
                 {{ $user->prenom }} {{ $user->nom }}
             </div>
-            <div style="font-size:0.82rem;color:var(--gray-400);margin-top:0.1rem;">{{ '@' . $user->pseudo }}</div>
-            <div style="display:flex;justify-content:center;margin-top:0.45rem;">
-                <div class="mentor-badge-cert">
-                    <i class="fas fa-check-circle"></i> Mentor certifié DevHub
-                </div>
+            <div class="mentor-badge-cert" style="margin-top:0.4rem;">
+                <i class="fas fa-check-circle"></i> Mentor certifié DevHub
             </div>
             @if($user->specialite)
                 <div style="font-size:0.78rem;color:var(--gray-500);margin-top:0.35rem;">
