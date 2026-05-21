@@ -334,7 +334,13 @@
         .profil-sidebar { order: 2; }
     }
     @media (max-width: 768px) {
-        .profil-identity-row { flex-direction: column; align-items: flex-start; }
+        .profil-identity-row {
+            flex-direction: column; align-items: center; text-align: center;
+        }
+        .profil-name-zone { text-align: center; }
+        .profil-actions-zone { justify-content: center; }
+        .profil-info-row { justify-content: center; }
+        .profil-social-links { margin-left: 0; }
         .profil-stats-bar { flex-wrap: wrap; }
         .profil-stat { min-width: 50%; }
         .settings-wrap { grid-template-columns: 1fr; }
