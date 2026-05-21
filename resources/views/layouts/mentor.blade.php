@@ -276,6 +276,9 @@
             @if(session('error'))
                 <div class="mentor-alert error"><i class="fas fa-exclamation-circle"></i>{{ session('error') }}</div>
             @endif
+            @if($errors->any())
+                <div class="mentor-alert error"><i class="fas fa-exclamation-circle"></i>{{ $errors->first() }}</div>
+            @endif
             @yield('content')
         </main>
     </div>

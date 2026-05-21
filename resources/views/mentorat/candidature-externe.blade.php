@@ -360,5 +360,6 @@ setupUpload('fileIdentite', 'nameIdentite', 'zoneIdentite');
 })();
 </script>
 
+<script src="{{ asset('js/welcome.js') }}"></script>
 </body>
 </html>

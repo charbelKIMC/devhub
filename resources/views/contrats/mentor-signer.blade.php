@@ -177,13 +177,6 @@
         <div class="cm-mentor-badge"><i class="fas fa-certificate me-1"></i>Mentor DevHub</div>
     </div>
 
-    @if ($errors->any())
-        <div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:1.25rem;font-size:0.85rem;color:#B91C1C;">
-            <i class="fas fa-exclamation-circle me-1"></i>
-            {{ $errors->first() }}
-        </div>
-    @endif
-
     {{-- Contrat --}}
     <div class="cm-contract-box">
         <div class="cm-contract-header">

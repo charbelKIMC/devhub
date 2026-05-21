@@ -31,12 +31,6 @@
     <div class="create-card">
         <div class="create-title">Nouvelle publication</div>
 
-        @if($errors->any())
-            <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:0.88rem;margin-bottom:1rem;">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
         <form method="POST" action="{{ route('publications.store') }}" id="createForm">
             @csrf
 

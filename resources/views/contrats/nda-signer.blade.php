@@ -351,12 +351,6 @@
             <form method="POST" action="{{ route('nda.signer', $contrat->token) }}" id="ndaForm">
                 @csrf
 
-                @if($errors->any())
-                    <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:0.82rem;color:#DC2626;">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
-
                 <label class="nda-checkbox-label" id="checkLabel">
                     <input type="checkbox" name="accord" id="accordCheck" value="1">
                     <div class="nda-checkbox-text">

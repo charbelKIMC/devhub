@@ -130,12 +130,6 @@
 @section('content')
     <main class="main-content">
 
-        @if(session('success'))
-            <div style="background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.875rem;display:flex;align-items:center;gap:.6rem;">
-                <i class="fas fa-check-circle"></i>{{ session('success') }}
-            </div>
-        @endif
-
         <div class="page-header-pub">
             <p style="font-size:.82rem;color:var(--gray-400);">Gerez et suivez toutes vos publications</p>
             <button class="btn-publish" data-bs-toggle="modal" data-bs-target="#modalPublication">

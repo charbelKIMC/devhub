@@ -293,6 +293,14 @@
         </div>
     @endif
 
+    @if($errors->any())
+        <div class="main-content" style="padding-bottom:0;">
+            <div class="alert-error-devhub">
+                <i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}
+            </div>
+        </div>
+    @endif
+
     <!-- Modal Publication -->
     <div class="modal fade" id="modalPublication" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
