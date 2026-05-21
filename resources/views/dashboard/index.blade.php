@@ -106,14 +106,14 @@
                                 @endphp
                                 <span class="publication-type">
                                     <i class="fas {{ $icons[$pub->type] ?? 'fa-file' }} me-1"></i>
-                                    {{ $labels[$pub->type] ?? $pub->type }}
+                                    <span class="type-label">{{ $labels[$pub->type] ?? $pub->type }}</span>
                                 </span>
                                 @if($statutConfig)
                                     <span style="font-size:0.65rem;font-weight:700;padding:0.15rem 0.45rem;border-radius:5px;background:{{ $statutConfig['bg'] }};color:{{ $statutConfig['color'] }};">
                                         {{ $statutConfig['label'] }}
                                     </span>
                                 @endif
-                                · {{ $pub->date_publication->diffForHumans() }}
+                                · <span class="pub-date" data-date="{{ $pub->date_publication }}">{{ $pub->date_publication->diffForHumans() }}</span>
                             </div>
                         </div>
                         {{-- Collaborer (projet collab uniquement) --}}
@@ -438,4 +438,67 @@
     </div>
 
 </main>
+
+@endsection
+
+@section('scripts')
+<script>
+// Formater les dates pour mobile
+function formatDateForMobile(date) {
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // différence en secondes
+
+    if (diff < 60) return 'à l\'instant';
+    if (diff < 3600) {
+        const mins = Math.floor(diff / 60);
+        return mins + ' min';
+    }
+    if (diff < 86400) {
+        const hours = Math.floor(diff / 3600);
+        return hours + ' h';
+    }
+    if (diff < 604800) {
+        const days = Math.floor(diff / 86400);
+        return days + ' j';
+    }
+
+    const months = Math.floor(diff / 2592000);
+    if (months < 12) return months + ' mois';
+
+    const years = Math.floor(diff / 31536000);
+    return years + ' an' + (years > 1 ? 's' : '');
+}
+
+// Appliquer le formatage sur mobile
+if (window.innerWidth <= 768) {
+    document.querySelectorAll('.pub-date').forEach(elem => {
+        const dateStr = elem.getAttribute('data-date');
+        if (dateStr) {
+            const date = new Date(dateStr);
+            elem.textContent = formatDateForMobile(date);
+        }
+    });
+}
+
+// Redéfinir au resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        const isMobile = window.innerWidth <= 768;
+        document.querySelectorAll('.pub-date').forEach(elem => {
+            const dateStr = elem.getAttribute('data-date');
+            if (dateStr) {
+                const date = new Date(dateStr);
+                if (isMobile) {
+                    elem.textContent = formatDateForMobile(date);
+                } else {
+                    // Remettre le format original si desktop
+                    elem.textContent = elem.textContent; // Peut être amélioré avec une date formatée
+                }
+            }
+        });
+    }, 250);
+});
+</script>
 @endsection

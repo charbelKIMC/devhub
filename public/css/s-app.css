@@ -598,6 +598,7 @@ body {
 @media (max-width: 768px) {
     .conteneur { padding: 0 1rem; }
     .header-nav{ display: none; }
+    #mobileSearchBtn { display: block !important; }
     .search-container { max-width: 100%; }
     .main-content { padding: 1rem; }
     .nav-tabs-custom { padding: 0 1rem; }

@@ -8,6 +8,8 @@
     .search-input-main:focus { border-color: var(--purple); }
     .btn-search { background: var(--purple); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-search:hover { background: var(--purple-dark); }
+    .btn-search .btn-text { display: inline; }
+    .btn-search .btn-icon { display: none; }
     .type-filter { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
     .type-filter-btn { padding: 0.4rem 1rem; border-radius: 20px; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-500); font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
     .type-filter-btn:hover, .type-filter-btn.active { background: var(--purple); color: white; border-color: var(--purple); }
@@ -25,6 +27,24 @@
     .result-dev-spec { font-size: 0.82rem; color: var(--gray-400); }
     .no-results { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
     .no-results i { font-size: 3rem; color: var(--gray-200); margin-bottom: 1rem; display: block; }
+    .pub-card-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .pub-title-wrapper { flex: 1; min-width: 0; }
+    .pub-title-wrapper .result-pub-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .review-type-badge { flex-shrink: 0; }
+
+    /* ─── RESPONSIVE MOBILE ─── */
+    @media (max-width: 768px) {
+        .recherche-container { margin: 1rem auto; padding: 0 1rem; }
+        .search-bar-main { gap: 0.5rem; margin-bottom: 1.25rem; }
+        .search-input-main { padding: 0.55rem 0.9rem; font-size: 0.95rem; }
+        .btn-search { padding: 0.55rem 0.75rem; }
+        .btn-search .btn-text { display: none; }
+        .btn-search .btn-icon { display: inline; }
+        .pub-card-header { flex-wrap: wrap; }
+        .pub-title-wrapper { width: 100%; }
+        .result-pub-title { font-size: 0.95rem; margin-bottom: 0.5rem; max-width: 100%; }
+        .review-type-badge { width: 100%; margin-top: 0.5rem; }
+    }
 </style>
 @endsection
 
@@ -42,7 +62,8 @@
             autofocus
         >
         <button type="submit" class="btn-search">
-            <i class="fas fa-search me-2"></i>Rechercher
+            <span class="btn-text"><i class="fas fa-search me-2"></i>Rechercher</span>
+            <i class="btn-icon fas fa-search"></i>
         </button>
     </form>
 
@@ -62,8 +83,10 @@
             <div class="section-title-search">Publications ({{ $publications->count() }})</div>
             @foreach($publications as $pub)
                 <a href="{{ route('publications.show', $pub->id) }}" class="result-pub-card">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="result-pub-title">{{ $pub->titre }}</div>
+                    <div class="pub-card-header">
+                        <div class="pub-title-wrapper">
+                            <div class="result-pub-title">{{ Str::limit($pub->titre, 60, '...') }}</div>
+                        </div>
                         @php
                             $badges = ['article'=>['Article','badge-article'],'idee'=>['Idée','badge-idee'],'projet_personnel'=>['Projet','personal-badge'],'projet_collaboratif'=>['Collaboratif','collaborative-badge']];
                             $b = $badges[$pub->type] ?? [$pub->type,''];

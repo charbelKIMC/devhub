@@ -338,15 +338,46 @@
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
-    flex-shrink: 0;
-    transition: background 0.2s, transform 0.15s;
 }
 
 .comment-inline-send:hover { background: var(--purple-dark); transform: scale(1.1); }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1200px) {
-    .dashboard-layout { grid-template-columns: 220px 1fr 250px; }
+    .dashboard-layout {
+        grid-template-columns: 220px 1fr 250px;
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    /* Masquer le texte du type de publication sur mobile */
+    .publication-type .type-label {
+        display: none;
+    }
+
+    /* Optimiser la date sur mobile */
+    .pub-date {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+    }
+
+    /* Réduire le layout du dashboard sur mobile */
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar-left {
+        display: none;
+    }
+
+    .dashboard-sidebar-right {
+        display: none;
+    }
+
+    .publications-feed {
+        width: 100%;
+    }
 }
 
 @media (max-width: 1024px) {

@@ -92,6 +92,11 @@
 
                 <!-- Notifications + User -->
                 <div class="d-flex align-items-center gap-2 ms-auto">
+                    <!-- Bouton recherche mobile -->
+                    <a href="{{ route('recherche.index') }}" class="nav-btn" style="display:none;" id="mobileSearchBtn">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    
                     <a href="{{ route('messagerie.index') }}" class="nav-btn {{ request()->routeIs('messagerie.*') ? 'active' : '' }}" style="position:relative;">
                         <div style="gap: 3px; display: flex; align-items: center;">
                             <i class="fas fa-comment-dots"></i> 
